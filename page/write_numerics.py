@@ -14,6 +14,10 @@ import math
 import os
 import sys
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "page"))
 from build_page import precision, stability, ring_fold  # noqa: E402
@@ -60,12 +64,16 @@ def main():
     w(f"| loss of star-shapedness | {P['star'][-1]:.12f} | three discretisations agree to 4·10^-13 |")
     src = load_json("results/hires/viz/bubble_viz.json").get("source", {})
     w(f"| touching, We* | {bv['touching']['We']:.12f} | cubic fit in z_pole on the {src.get('fit_states', '')} states with z_pole < 10^-3 of the high-resolution branch (down to z_pole = 1.0·10^-5); windows z_pole < 3·10^-4 … 2·10^-3 (109–169 states) agree to 2·10^-13 |")
-    w(f"| bubble branch, 8 points z_pole = 0.89 … 1.2·10^-5 (*first computation*) | We, λ | three discretisations (up to 5248 nodes): We to {e(max(c[2] for c in P['conv']))}, λ to {e(max(c[3] for c in P['conv']))} |")
+    cv = P["conv"]
+    w(f"| bubble branch, {len(cv)} points z_pole = {cv[0][0]:.2f} … {e(cv[-1][0], 2)} (*first computation*) | We, λ | three discretisations (up to {max(c[4] for c in cv)} nodes): We to {e(max(c[2] for c in cv))}, λ to {e(max(c[3] for c in cv))} |")
     w(f"| small-We sweep (23 bubbles, We = 10^-4 … 0.4) | χ, λ | two discretisations agree to {e(mns['resolution_spread']['chi'])} and {e(mns['resolution_spread']['lam'])} |")
     rh = P["rings_hp"]
     w(f"| rings, r_h = {rh['r_h'][0]} … {rh['r_h'][1]} ({rh['n']} rings, *first computation*) | We, λ, Γ | 128 against 240 Fourier modes: We to {e(rh['dWe'])}, λ to {e(rh['dlam'])}, Γ to {e(rh['dcirc'])} |")
     w("| high-resolution rings, r_h = 0.014 … 0.039 (16 rings) | We, λ, Γ | the neck map (M = 160) and the curvature map (M = 240) agree to 5·10^-13 |")
-    w("| thin rings, r_h = 111, 613, 1116 (*first computation*) | relative spread of We | 7·10^-11, 1.6·10^-8, 8.8·10^-8 (three resolutions); Γ to 10^-12, λ to 10^-9 |")
+    tc = load_json("results/rings/ring_convergence_thin.json")
+    w(f"| thin rings, r_h = {', '.join(str(round(c['r_h'])) for c in tc)} (*first computation*) | relative spread of We | "
+      f"{', '.join(e(c['We_spread_rel'], 2) for c in tc)} (four re-solves: M = 128, 176, 240 and 240 with twice the panels); "
+      f"Γ to {e(max(c['circulation_spread_rel'] for c in tc))}, λ to {e(max(c['lam_spread_rel'] for c in tc), 2)} |")
     w("| rings, independent checks (*first computation*) | | a second ring solver (polar Fourier shape, method of fundamental solutions) reproduces We to 1.2·10^-12; a Kress–Nyström flow solver reproduces the sheet strength to 8·10^-10; a direct 3D Biot–Savart quadrature finds zero velocity inside the tube to 5·10^-14 |")
     w(f"| volume of every ring (Pappus) | 2π r̄ A = 4π/3 | holds to {e(max(abs(p['pappus_err']) for p in ms['zero_flux']), 2)} |")
     w("")
@@ -98,20 +106,22 @@ def main():
     w("## Asymptotics in detail")
     w("")
     f = mns["fits"]["M28"]["deg5"]
-    w("**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with γ = 0):")
+    w("**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with their parameter γ = 0):")
     w("d(θ) = −(3/32) We (3cos²θ − 1) + o(We), χ = 1 + (9/32) We + O(We²), hence λ = H_pole = 2 − (3/4) We.")
     w("Least-squares fits on 19 bubbles with We ≤ 0.1:")
     w("")
     w(f"    χ = 1 + {f['chi'][0]:.13f} We + {f['chi'][1]:.10f} We² + …")
     w(f"    λ = 2 − {-f['lam'][0]:.13f} We − {-f['lam'][1]:.10f} We² + …")
     w("")
-    w("The We² coefficients agree with 549/5120 and −9/160 to a few parts in 10^10 (observed, not derived).")
+    d2 = max(abs(f['chi'][1] - 549 / 5120), abs(f['lam'][1] + 9 / 160))
+    w(f"The We² coefficients agree with 549/5120 and −9/160 to {e(d2)} (observed, not derived).")
     w("")
     w("**Thin rings** (Meyer–Seis, Theorem 1.3, ρ = 0): W = (log(8/ε) − 1/2)/(4π) + πβ/2,")
     w("γ = 3 log(8/ε)/(8π) − 15/(16π) − πβ/4, ν = −1/(4π²) + β, each up to o(1). In our units")
     w("W = R/|Γ|, β = 2ε̄/(We Γ²), γ = −Q/(R|Γ|) = 0 on the zero-flux branch, ν = βε̄λ.")
-    w("The informal Theorem 1.1, formula (1.7), writes the surface-tension term of the speed as")
-    w("πR ε̄σ/(b_ext ρ), which is not a speed; Theorem 1.3 gives π ε̄σ/(R b_ext ρ).")
+    w("The informal Theorem 1.1, formula (1.19) of arXiv:2409.08220v2, writes the surface-tension term")
+    w("of the speed as πR ε̄σ/(b_ext ρ), which is not a speed (apparently a misprint); Theorem 1.3 gives")
+    w("π ε̄σ/(R b_ext ρ).")
     w("")
     w("| R | ε | β | We | W computed | W Meyer–Seis | γ Meyer–Seis (computed 0) | ν − ν_MS |")
     w("|---|---|---|---|---|---|---|---|")

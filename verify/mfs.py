@@ -69,7 +69,6 @@ def torus_speed_fourier(R, a, nsrc=64, fsrc=0.5, nq=256, nmax=6):
     # Fourier cosine coefficients on [0, pi] (midpoint rule = exact for trig polys of degree < 2nq)
     cu = np.array([(1 if n == 0 else 2) * np.mean(u * np.cos(n * ph)) for n in range(nmax + 1)])
     cu2 = np.array([(1 if n == 0 else 2) * np.mean(u ** 2 * np.cos(n * ph)) for n in range(nmax + 1)])
-    circ = np.mean(u * (R + 0 * ph)) * 0  # placeholder
     # circulation as line integral of u around the full section: 2 * int_0^pi u a dphi
     circ_line = 2 * a * np.pi * np.mean(u)
     return dict(G=T['G'], circ_line=circ_line, cu=cu, cu2=cu2, psi_err=psi_err, u=u, ph=ph)

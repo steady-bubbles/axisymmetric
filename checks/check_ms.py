@@ -1,8 +1,8 @@
-"""Thin-ring check of the ring branch against Meyer & Seis, Thm 1.3 (T2).
+"""Thin-ring check of the ring branch against Meyer & Seis, Theorem 1.3.
 
 Meyer & Seis, "Steady ring-shaped vortex sheets" (arXiv:2409.08220), construct
 thin hollow vortex rings with surface tension by the implicit function
-theorem.  Their precise Theorem 1.3 (labelled T2 in the source) is stated in
+theorem.  Their precise Theorem 1.3 (numbers as in arXiv:2409.08220v2) is stated in
 non-dimensional variables.  For a vacuum interior (rho = 0) it reads, as the
 aspect ratio eps -> 0,
 
@@ -42,16 +42,20 @@ fitted by A eps^2 log^2(1/eps) + B eps^2 log(1/eps) + C eps^2 with relative
 weights, on the rings with eps < 0.05 and r_h <= 320 (beyond, the remainders of W
 and gamma reach the 1e-8 accuracy of the computed We).
 
-Remark: the informal Theorem 1.1, formula (407), writes the surface-tension
+Remark: the informal Theorem 1.1, formula (1.19), writes the surface-tension
 term of the speed as (pi R / (b_ext rho)) eps_bar sigma.  That is not
-dimensionally a speed; the precise theorem gives (pi / (R b_ext rho))
-eps_bar sigma, which is what is tested here.
+dimensionally a speed (apparently a misprint); the precise Theorem 1.3 gives
+(pi / (R b_ext rho)) eps_bar sigma, which is what is tested here.
 """
 import json
 import os
 import sys
 
 import numpy as np
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -65,6 +69,9 @@ ZERO_FLUX_FILES = ["rings_neck3", "rings_neck2", "rings_neck", "rings_down2", "r
 # the merged high-resolution branch (scripts/merge_hires_rings.py), when present: it replaces the
 # stored files, from which it already takes the ranges no new chain reached
 HIRES = "results/hires/rings_merged.json"
+# the remainder fits use the thin rings up to this r_h (beyond, the remainders of W and gamma
+# reach the 1e-8 accuracy of the computed We)
+FIT_RH_MAX = 320.0
 
 
 def zero_flux_files():
@@ -148,7 +155,7 @@ def main():
               f"max|dgamma|={max(abs(p['dgamma']) for p in pts):.3e}",
               f"max|dnu|={max(abs(p['dnu']) for p in pts):.3e}")
     # fits of the remainders on the thin rings: d ~ eps^2 (A log^2(1/eps) + B log(1/eps) + C), relative
-    # weights, up to r_h = 320 (beyond, the remainders of W and gamma reach the noise of the computed We)
+    # weights, up to r_h = FIT_RH_MAX
     thin = [d for d in zf if d['eps'] < 0.05 and d['r_h'] <= FIT_RH_MAX]
     fits = {}
     for k in ("dW", "dgamma", "dnu"):
@@ -161,7 +168,7 @@ def main():
                        max_rel_resid=float((np.abs(V @ c - y) / np.abs(y)).max()), n=len(thin),
                        r_h_max=FIT_RH_MAX,
                        ratio_eps2log2=[float((y / (e ** 2 * L ** 2)).min()), float((y / (e ** 2 * L ** 2)).max())])
-    print("remainder fits on eps < 0.05, r_h <= 320:", fits)
+    print(f"remainder fits on eps < 0.05, r_h <= {FIT_RH_MAX:g}:", fits)
     out = dict(zero_flux=zf, sheet=sc, remainder_fits=fits,
                formulas=dict(W="(log(8/eps)-1/2)/(4pi) + pi beta/2",
                              gamma="3 log(8/eps)/(8pi) - 15/(16pi) - pi beta/4",

@@ -1,6 +1,6 @@
 """Compare the ring branch computed at the standard resolution (rings_up.json,
-M = 128, resolved to res_hi < 1e-6) with the high-precision rerun
-(rings_up_hp.json, Fourier tail < 1e-13) at the same hole radii.
+M = 128, resolved to res_hi < 1e-6) with its rerun at M = 240
+(rings_up_hp.json, Fourier tail < 1e-13; both belong to the first computation) at the same hole radii.
 
 Usage: python scripts/compare_precision.py
 Writes results/rings/precision.json and prints the table.
@@ -13,6 +13,10 @@ import warnings
 import numpy as np
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 sys.path.insert(0, ROOT)
 from bubbles.ring import RingMap, ring_z_max  # noqa: E402
@@ -29,7 +33,7 @@ def main():
     std = json.load(open(os.path.join(RINGS, 'rings_up.json')))
     hp_file = os.path.join(RINGS, 'rings_up_hp.json')
     if not os.path.exists(hp_file):
-        sys.exit('results/rings/rings_up_hp.json not found (the high-precision rerun, scripts/run_rings.py '
+        sys.exit('results/rings/rings_up_hp.json not found (the M = 240 rerun, scripts/run_rings.py '
                  'results/rings/rings_down_part1.json:0 results/rings/rings_up_hp.json 1.15 40 320 --tail=1e-13)')
     hp = json.load(open(hp_file))
     rows = []

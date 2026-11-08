@@ -148,7 +148,7 @@ class Sector:
     def hessian(self, We, parity, K, basis=None):
         """Basis sin^m t cos(k t) (k even <-> v even under z -> -z), k < K."""
         st, m = self.st, self.m
-        g, P = st.g, st.P
+        P = st.P
         t = P.tf
         ks = np.arange(0 if parity == 'even' else 1, K, 2)
         V = np.sin(t)[None, :] ** m * np.cos(np.outer(ks, t)) if basis is None else basis

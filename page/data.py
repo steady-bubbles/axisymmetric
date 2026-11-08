@@ -4,7 +4,7 @@ The page shows the high-resolution computation: the bubble frames
 results/hires/viz/bubble_viz.json, the ring frames results/hires/viz/rings_viz.json
 and, for the thin-ring check, the merged ring branch results/hires/rings_merged.json.
 The stability spectra, the branch points, the precision studies and the flux scans
-come from the earlier runs in results/ and results/rings/.
+come from the first computation in results/ and results/rings/.
 """
 import json
 import os

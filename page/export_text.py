@@ -1,4 +1,4 @@
-"""Write text/page_text.tex: all prose of the page as one LaTeX file, for editing.
+"""Write docs/page_text.tex: all prose of the page as one LaTeX file, for editing.
 
 It holds, in page order, the title, the intro, every section with its paragraphs
 and displayed equations, the figure captions, the texts on the three asymptotics
@@ -18,6 +18,10 @@ import os
 import re
 import sys
 from html.parser import HTMLParser
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "page"))
@@ -142,7 +146,8 @@ class Extract(HTMLParser):
             self.buf.append(" ")
 
     def handle_endtag(self, tag):
-        top = self.stack.pop() if self.stack else (tag, set())
+        if self.stack:
+            self.stack.pop()
         if self.skip:
             if tag not in ("input", "br"):
                 self.skip -= 1

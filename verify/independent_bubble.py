@@ -58,6 +58,11 @@ Checks performed by the driver
 * dimple onset (lambda = 0) at 3 resolutions, We at z_pole = 0.5 and 0.7.
 """
 import os
+import sys
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 for _v in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'):
     os.environ.setdefault(_v, '1')
 import json
@@ -73,6 +78,9 @@ PI_LD = LD('3.141592653589793238462643383279502884')
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 OUT = os.path.join(REPO, 'results', 'checks', 'independent_bubble.json')
 
+# points: three bubbles of an earlier run of scripts/convergence.py (three discretisations of the main
+# solver agree there to 1e-13), whose seed branch is not kept; each is defined by its z_pole, at which
+# this solver solves, so they remain valid points of the branch.
 REFERENCE = dict(
     fold=dict(We_max=1.6176521718921, chi=3.86456346, z_pole=0.39258860, lam=0.18858122, r_eq=1.51718355),
     points=[dict(z_pole='0.89072', We=0.531630365991074, lam=1.581887304553710),
@@ -937,4 +945,7 @@ def run_task(task):
 
 
 if __name__ == '__main__':
+    if np.finfo(np.longdouble).nmant < 63:
+        print('warning: numpy long double is not 80-bit on this platform (e.g. macOS arm64, Windows); '
+              'the extended-precision parts of this check then run in double precision', flush=True)
     main()

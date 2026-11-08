@@ -7,6 +7,10 @@ import json, os, sys, warnings, time
 import numpy as np
 warnings.filterwarnings('ignore')
 from mfs import solve, speed
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
 tag, N, nsrc, fsrc = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), float(sys.argv[4])

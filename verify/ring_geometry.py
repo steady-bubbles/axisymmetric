@@ -59,7 +59,6 @@ def measure(p, split=1, nmax=8):
             break
     _, zmax = eval_x(g, np.array([tq]))
     zmax = float(zmax[0])
-    rho_ex = None
     return dict(r_h=float(g.r_h), r_o=float(g.r_o), r_c=float(rc), area=float(2 * Au), a0=float(a0),
                 c=[float(x) for x in cn], maxdev=maxdev, zmax=zmax,
                 aspect=float((g.r_o - g.r_h) / (2 * zmax)), star=star, z_end=float(g.z_end1),

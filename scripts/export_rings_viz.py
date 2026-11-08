@@ -1,27 +1,27 @@
-"""Export ring frames (from scripts/run_rings.py and scripts/ring_qscan.py output) for the explorer.
+"""Export ring frames (from scripts/run_rings.py and scripts/ring_qscan.py output) for the page.
 
 Each frame: the upper half of the cross-section from the inner rim (r_h, 0) to the outer
 rim (r_o, 0), surface speed |u| = |gamma|, H and the pointwise residual of
 H = lam + (We/2)|u|^2 along it (log10 in tenths, between the nodes), and streamlines, level sets of
 Psi = r^2/2 + V[gamma] (Psi = 0 on the axis, Psi = Q on the ring, 2 pi Q the flux through
 the hole):
-  lines   in the explorer's fixed window r <= 3.2, z <= 2.2 at Psi = r_inf^2/2 (as for the
+  lines   in the page's fixed window r <= 3.2, z <= 2.2 at Psi = r_inf^2/2 (as for the
           bubbles; only rings that fit in that window), and for Q < 0 at Psi = Q/2 (the
           fluid circling the tube backwards through the hole),
   flines  in the fit-frame window fwin = [r_c, w, h] centred on the tube (r in
           [r_c - w, r_c + w], z in [0, h]) at evenly spaced Psi between its extremes,
   slines  for rings that do not fit the fixed window: in the window swin = [r_c, 3.2, 2.2]
           of the fixed window's size and scale, moved to the tube centre r_c, at evenly
-          spaced Psi between its extremes (the explorer's default view of these rings, so
+          spaced Psi between its extremes (the page's default view of these rings, so
           the tube is drawn at one scale along the whole branch).
 For Q > 0 the level Psi = Q off the ring has index -1: the fluid between it and the axis
 passes through the hole (flux 2 pi Q).  For Q < 0 Psi > Q off the ring (the flow along the
 ring does not stagnate), so there is none.
 Coordinates are integers: r = r0 + r_int xy, z = z_int xy (xy per frame, from the neck
 radius and the tube size); line points in units of 1e-3 (lines) or h/1000 about (r_c, 0)
-(flines) or 1e-3 about (r_c, 0) (slines).  The deviations the explorer magnifies are below that rounding for thin rings and
+(flines) or 1e-3 about (r_c, 0) (slines).  The deviations the page magnifies are below that rounding for thin rings and
 the smallest necks, so they are exported at full precision (3 significant digits):
-  tdev    (r_h > TUBE_RH, the explorer's tube panel) the cross-section closed by its mirror
+  tdev    (r_h > TUBE_RH, the page's tube panel) the cross-section closed by its mirror
           image about its centroid (r_c, 0): a0, its mean radius over the polar angle, r_c,
           max |rho/a0 - 1| over the samples, and rho/a0 - 1 = d unit at every step-th sample,
   ndev    (r_h <= TUBE_RH, the neck panel) r/r_h - cosh(z/r_h) = d unit at the samples from
@@ -52,6 +52,10 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 sys.path.insert(0, ROOT)
 
@@ -65,7 +69,7 @@ from export_viz import NR, NZ, R_INF, R_MAX, Z_MAX, rdp  # noqa: E402
 NT = 361
 FIT = 0.42            # the tube fills this fraction of the fit window (width and height)
 NFL = 14              # about this many Psi levels in the fit window
-TUBE_RH = 0.15        # as in the explorer: tube panel above, neck panel below
+TUBE_RH = 0.15        # as on the page: tube panel above, neck panel below
 TSTEP = 3             # tdev at every TSTEP-th sample
 NSL = 16              # about this many Psi levels in the shifted fixed-size window
 STREAMS = ('lines', 'fwin', 'flines', 'swin', 'slines')
@@ -160,7 +164,7 @@ def neck_dev(x, r_h):
 
 
 def fits(p):
-    """The ring fits the fixed window (as the explorer's fits())."""
+    """The ring fits the fixed window (as the page's fits())."""
     return p['r_o'] <= R_MAX - 0.05
 
 
@@ -184,7 +188,7 @@ def streamlines(p, st, x, Q, have=None):
     if not (need_l or need_f or need_s):
         return out
     psi = Psi(st, x)
-    # fixed window: the explorer's r_inf levels, Psi = Q (Q > 0; bold) or Q/2 (Q < 0)
+    # fixed window: the page's r_inf levels, Psi = Q (Q > 0; bold) or Q/2 (Q < 0)
     if need_l:
         rg, zg = np.linspace(0, R_MAX, NR), np.linspace(0, Z_MAX, NZ)
         lev = list(enumerate(rinf ** 2 / 2 for rinf in R_INF))

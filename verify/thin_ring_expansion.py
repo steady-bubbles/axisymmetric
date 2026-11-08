@@ -3,6 +3,11 @@ Psi = (1/2pi)[log(8/rho) - 2] + (rho cos phi/4pi)[log(8/rho) - 1]
       + (1/2pi)[ q0(rho) + ((1/16) rho^2 log rho + D2 rho^2) cos 2phi ] + O(rho^3 log)
 Extract D2 (and check the first two orders) by Fourier analysis in phi."""
 import mpmath as mp
+import sys
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 mp.mp.dps = 40
 
 def psi(r, z, R=1):

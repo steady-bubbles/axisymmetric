@@ -6,7 +6,7 @@ Usage: python scripts/ring_sectors.py out.json run.json [run2.json ...] [--secto
        [--m=2,3,4] [--m-every=1] [--m-rhmax=inf] [--bounds] [--nev=4] [--K=64] [--c_h=20]
        [--nproc=$BUBBLES_NPROC or 2] [--from=rows.json,...] [--idx=lo:hi]
 
-Runs are plain lists of ring records (rings_*.json, sheet_rh*.json, fixedQ_*.json; Q = 0 if
+Runs are plain lists of ring records (rings_*.json, sheet_rh*.json; Q = 0 if
 a record has none).  Sectors: '0o', '1e', '1o' (translations removed), '0eQ' and '0eG'
 (m = 0 even, volume fixed and hole flux or circulation fixed).  --m adds both parities of
 the direct sectors m on every --m-every-th record of a run with r_h <= --m-rhmax
@@ -49,6 +49,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from bubbles.ring import RingMap, RingState, ring_panels  # noqa: E402
 from bubbles.sectors import RingSector  # noqa: E402
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 CONSTRAINT = {'Q': 'Q', 'G': 'Gamma', '': 'Q'}       # '' (m >= 1, 0o): neither enters
 

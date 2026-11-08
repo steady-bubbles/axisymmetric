@@ -17,8 +17,7 @@ import time
 import numpy as np
 
 from .bubble import BubbleState
-from .geometry import (ParamMap, adaptive_panels, decay_rate, map_family,
-                       optimise_map, reparametrize)
+from .geometry import ParamMap, adaptive_panels, decay_rate, optimise_map, reparametrize
 
 
 class Branch:

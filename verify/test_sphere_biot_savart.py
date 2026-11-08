@@ -1,4 +1,4 @@
-"""Validation of bs.py on the exact sphere solution (no solver code)."""
+"""Validation of biot_savart.py on the exact sphere solution (no solver code)."""
 import numpy as np, time
 from numpy.polynomial.legendre import leggauss
 from biot_savart import Curve, velocity

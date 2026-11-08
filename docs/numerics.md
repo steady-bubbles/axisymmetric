@@ -16,11 +16,11 @@ which the high-resolution chains start from. The checks are `checks/check_mns.py
 | dimple onset (λ = 0) | 1.5620469061383 | three discretisations agree to 2·10^-13; independent solver 1.562046906138189 (difference -9·10^-14) |
 | loss of star-shapedness | 1.230744086430 | three discretisations agree to 4·10^-13 |
 | touching, We* | 1.133089514170 | cubic fit in z_pole on the 147 states with z_pole < 10^-3 of the high-resolution branch (down to z_pole = 1.0·10^-5); windows z_pole < 3·10^-4 … 2·10^-3 (109–169 states) agree to 2·10^-13 |
-| bubble branch, 8 points z_pole = 0.89 … 1.2·10^-5 (*first computation*) | We, λ | three discretisations (up to 5248 nodes): We to 3·10^-13, λ to 7·10^-14 |
+| bubble branch, 8 points z_pole = 0.90 … 1.1·10^-5 (*first computation*) | We, λ | three discretisations (up to 4448 nodes): We to 4·10^-13, λ to 7·10^-14 |
 | small-We sweep (23 bubbles, We = 10^-4 … 0.4) | χ, λ | two discretisations agree to 3·10^-15 and 7·10^-15 |
 | rings, r_h = 0.03924 … 5.225 (36 rings, *first computation*) | We, λ, Γ | 128 against 240 Fourier modes: We to 4·10^-12, λ to 3·10^-12, Γ to 8·10^-12 |
 | high-resolution rings, r_h = 0.014 … 0.039 (16 rings) | We, λ, Γ | the neck map (M = 160) and the curvature map (M = 240) agree to 5·10^-13 |
-| thin rings, r_h = 111, 613, 1116 (*first computation*) | relative spread of We | 7·10^-11, 1.6·10^-8, 8.8·10^-8 (three resolutions); Γ to 10^-12, λ to 10^-9 |
+| thin rings, r_h = 111, 613, 1116 (*first computation*) | relative spread of We | 7.1·10^-11, 1.6·10^-8, 8.8·10^-8 (four re-solves: M = 128, 176, 240 and 240 with twice the panels); Γ to 8·10^-12, λ to 1.4·10^-9 |
 | rings, independent checks (*first computation*) | | a second ring solver (polar Fourier shape, method of fundamental solutions) reproduces We to 1.2·10^-12; a Kress–Nyström flow solver reproduces the sheet strength to 8·10^-10; a direct 3D Biot–Savart quadrature finds zero velocity inside the tube to 5·10^-14 |
 | volume of every ring (Pappus) | 2π r̄ A = 4π/3 | holds to 1.5·10^-10 |
 
@@ -50,20 +50,21 @@ the two-parameter family of Meyer and Seis.
 
 ## Asymptotics in detail
 
-**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with γ = 0):
+**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with their parameter γ = 0):
 d(θ) = −(3/32) We (3cos²θ − 1) + o(We), χ = 1 + (9/32) We + O(We²), hence λ = H_pole = 2 − (3/4) We.
 Least-squares fits on 19 bubbles with We ≤ 0.1:
 
     χ = 1 + 0.2812499999985 We + 0.1072265632 We² + …
     λ = 2 − 0.7499999999986 We − 0.0562500004 We² + …
 
-The We² coefficients agree with 549/5120 and −9/160 to a few parts in 10^10 (observed, not derived).
+The We² coefficients agree with 549/5120 and −9/160 to 7·10^-10 (observed, not derived).
 
 **Thin rings** (Meyer–Seis, Theorem 1.3, ρ = 0): W = (log(8/ε) − 1/2)/(4π) + πβ/2,
 γ = 3 log(8/ε)/(8π) − 15/(16π) − πβ/4, ν = −1/(4π²) + β, each up to o(1). In our units
 W = R/|Γ|, β = 2ε̄/(We Γ²), γ = −Q/(R|Γ|) = 0 on the zero-flux branch, ν = βε̄λ.
-The informal Theorem 1.1, formula (1.7), writes the surface-tension term of the speed as
-πR ε̄σ/(b_ext ρ), which is not a speed; Theorem 1.3 gives π ε̄σ/(R b_ext ρ).
+The informal Theorem 1.1, formula (1.19) of arXiv:2409.08220v2, writes the surface-tension term
+of the speed as πR ε̄σ/(b_ext ρ), which is not a speed (apparently a misprint); Theorem 1.3 gives
+π ε̄σ/(R b_ext ρ).
 
 | R | ε | β | We | W computed | W Meyer–Seis | γ Meyer–Seis (computed 0) | ν − ν_MS |
 |---|---|---|---|---|---|---|---|

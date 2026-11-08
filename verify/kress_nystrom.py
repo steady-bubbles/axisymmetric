@@ -16,6 +16,10 @@ import numpy as np
 from scipy.linalg import lu_factor, lu_solve
 from scipy.special import ellipe, ellipk, ellipkm1
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 VOL = 4 * np.pi / 3
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 FILES = dict(up=os.path.join(REPO, 'results/rings/rings_up.json'),
@@ -196,8 +200,7 @@ def main(tag, idx, Ns=(1024, 2048)):
     out['z_max_mine'] = float(zmax)
     out['z_max_json'] = p['z_max']
     out['one_minus_zmax_over_a'] = float(1 - zmax / aa)
-    # polar description about (R, 0); cos(n phi) content of the radius
-    phi = np.unwrap(np.arctan2(z, r - RR))
+    # distance from (R, 0)
     rad = np.hypot(r - RR, z)
     out['rad_min_over_a'] = float(rad.min() / aa)
     out['rad_max_over_a'] = float(rad.max() / aa)

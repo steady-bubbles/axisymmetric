@@ -23,6 +23,10 @@ from bubbles.ring import (RingMap, RingPanels, RingState, ring_curve_points, rin
                           ring_z_max)
 from bubbles.ring_init import curve_theta, design_map, fit_ring  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 
 def remap(Y, rm, M_new):
     pts, _ = ring_curve_points(Y, rm, n=200000)

@@ -41,8 +41,8 @@ dir = 0, the dir = -1 side negative), with the keys of rings_up.json plus Q, Qha
 R = (r_h + r_o)/2, u_waist (sheet strength at the inner rim), We2D = We Gamma^2/(4 pi^2 a)
 (a = (r_o - r_h)/2), z_dip (interior minimum of z), det_sign, sigma_min, sigma_b (signed
 smallest singular value of the bordered Jacobian), dQ_ds, dWe_ds, dlam_ds (tangent towards
-increasing s_arc), dir, s_arc, ds, its, nJ, flags.  run_rings_arc.py (out.json:i --Q=...)
-and ring_sectors.py read it unchanged.  Written atomically after every point; settings and
+increasing s_arc), dir, s_arc, ds, its, nJ, flags.  ring_sectors.py and export_rings_viz.py
+read it unchanged.  Written atomically after every point; settings and
 per-direction status go to <out>.meta.json.  Re-running the command continues every
 direction that did not reach a final stop from its last record; an existing output that
 starts from another (r_h, Q) is refused.
@@ -53,8 +53,7 @@ Usage: python scripts/ring_qscan.py src.json idx out.json [--M=] [--dirs=-1,+1] 
   --M modes (default 64; for a record with Q, e.g. from a sheet, its own M); --nmax
   accepted steps per direction (in total, over restarts); --tcap and --stall in minutes:
   wall clock per direction and without an accepted step.  --Q0 re-solves the start at this
-  Q (default: the record's Q); with --nmax=0 the output is just that ring, e.g. the start
-  for run_rings_arc.py out.json:0 --Q=Q0.
+  Q (default: the record's Q); with --nmax=0 the output is just that ring.
 """
 import json
 import os
@@ -73,6 +72,10 @@ from bubbles.geometry import decay_rate  # noqa: E402
 from bubbles.ring import (RingMap, RingPanels, RingState, _init, _ring_F, closure_ok, default_nproc,  # noqa: E402
                           residual_floor, ring_curve_points, ring_jacobian, ring_panels, ring_theta, ring_z_max)
 from bubbles.ring_init import curve_theta, design_map, fit_ring  # noqa: E402
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 C_H, RES_TOL, RES_MAX, TAIL_MAX = 6.0, 1e-6, 1e-4, 1e-6
 MAXIT, EASY_IT = 8, 6

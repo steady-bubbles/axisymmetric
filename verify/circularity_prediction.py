@@ -9,6 +9,11 @@ import json, os, warnings
 import numpy as np
 warnings.filterwarnings('ignore')
 from mfs import torus_speed_fourier
+import sys
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
 geo = json.load(open(os.path.join(REPO, 'results', 'verify', 'geom.json')))

@@ -40,6 +40,10 @@ from bubbles.ring import (RingGeometry, RingMap, RingPanels, RingState, _init, d
                           ring_z_max)
 from bubbles.ring_init import curve_theta, design_map, fit_ring, neck_map  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 NECK = '--neck' in sys.argv
 THIN = '--thin' in sys.argv
 # --tail=eps: judge resolution by the Fourier tail (max |a_k|, k > 0.85 M) < eps also with the

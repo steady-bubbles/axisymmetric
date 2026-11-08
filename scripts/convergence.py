@@ -17,6 +17,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from bubbles.continuation import Branch, solve_constrained  # noqa: E402
 from bubbles.geometry import ParamMap  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 src = sys.argv[1] if len(sys.argv) > 1 else 'results/branch.json'
 out = sys.argv[2] if len(sys.argv) > 2 else 'results/convergence.json'
 pts = json.load(open(src))

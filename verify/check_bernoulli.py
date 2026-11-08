@@ -27,6 +27,10 @@ from scipy.interpolate import make_interp_spline
 from scipy.special import ellipe, ellipk
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 sys.path.insert(0, REPO)
 from bubbles.ring import RingMap, RingPanels, RingState, ring_curve_points, ring_theta  # noqa: E402
@@ -93,7 +97,6 @@ class FourierCurve:
 
     def eval(self, t, kmax=None):
         """Trig interpolant of the points and its derivatives at arbitrary t."""
-        Nt = self.Nt
         kmax = kmax or 260
         sel = np.abs(self.n) <= kmax
         n, R, Z = self.n[sel], self.Rh[sel], self.Zh[sel]
@@ -141,7 +144,6 @@ def cos_eval(c, t):
 # --------------------------------------------------------------------------- stream function
 def psi_ring_lamb(r, z, rho, zeta):
     """Stokes stream function of a unit-circulation ring (Lamb), own implementation."""
-    r1sq = (r - rho) ** 2 + (z - zeta) ** 2
     r2sq = (r + rho) ** 2 + (z - zeta) ** 2
     m = 4 * r * rho / r2sq                         # k^2
     return np.sqrt(r2sq) / (4 * np.pi) * ((2 - m) * ellipk(m) - 2 * ellipe(m))

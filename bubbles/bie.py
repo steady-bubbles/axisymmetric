@@ -37,7 +37,7 @@ class ExteriorNeumann:
         self.geom = g = geom
         self.P = P = geom.panels
         self.eta = eta
-        N, Nh, p = P.N, P.Nh, P.p
+        Nh, p = P.Nh, P.p
         ti = slice(0, Nh)
         r_t, z_t = g.r[ti], g.z[ti]
         rho, zeta = g.r, g.z

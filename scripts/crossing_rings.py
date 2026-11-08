@@ -1,5 +1,6 @@
-"""Rings solved exactly at the crossings of the even sectors m on the zero-flux branch, for
-the Lyapunov-Schmidt runs (scripts/ring_ls.py) and the exported bifurcation modes.
+"""Rings solved exactly at the crossings of the even sectors m on the zero-flux branch: the
+rings where non-axisymmetric branches with azimuthal wave number m leave (results/rings/
+crossing_rings.json; the branch points on the page and in the README).
 
 mu_m(r_h) is the lowest eigenvalue of the even sector m (bubbles.sectors.RingSector, K
 cosines, translation removed for m = 1); each even sector crosses zero once along the
@@ -13,7 +14,7 @@ dmu_dWe = (dmu/dr_h) / (dWe/dr_h), and dmu_dWe_err its change when the next near
 added (a cubic through four samples).  With --dQ > 0 the ring is also solved at fixed r_h* with
 the flux Q = +-dQ R^2 (R = (r_h + r_o)/2), which gives the Q-derivatives and dmu_dWe_Gamma, the
 slope along the axisymmetric rings of fixed circulation (dQ/dr_h = -Gamma_r/Gamma_Q there),
-which the fixed-Gamma Lyapunov-Schmidt runs need (for m = 1 take --dQ=2e-4: the flux acts on
+for a Lyapunov-Schmidt reduction at fixed circulation (for m = 1 take --dQ=2e-4: the flux acts on
 the neck on the scale |Q| ~ 0.55 r_h^1.5).  Solves and sectors use the same panels,
 ring_panels(c_h, 1e-10).
 
@@ -40,6 +41,10 @@ import warnings
 import numpy as np
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 sys.path.insert(0, ROOT)
 

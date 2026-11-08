@@ -24,6 +24,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from bubbles.continuation import Branch  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 opts = dict(z_min=1e-5, ds_max=0.0125, dlog=0.03125, res_tol=1e-12, M_margin=16, c_h=1.4,
             panel_tol=1e-14, z_switch=0.05)
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
@@ -33,7 +37,9 @@ for a in sys.argv[1:]:
         if k not in opts:
             sys.exit(f'unknown option --{k}')
         opts[k] = type(opts[k])(float(v)) if not isinstance(opts[k], int) else int(v)
-out = args[0] if args else 'results/branch_hires.json'
+if not args:
+    sys.exit(__doc__)
+out = args[0]
 print('options', opts, flush=True)
 
 t0 = time.time()

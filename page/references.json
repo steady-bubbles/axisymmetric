@@ -4,7 +4,7 @@
   "title": "Steady bubbles and drops in inviscid fluids",
   "venue": "Calc. Var. Partial Differential Equations 64, 299",
   "year": "2025",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1007/s00526-025-03144-w",
   "url": "https://doi.org/10.1007/s00526-025-03144-w",
   "arxiv": "2503.05503"
@@ -14,7 +14,7 @@
   "title": "Steady ring-shaped vortex sheets",
   "venue": "J. Eur. Math. Soc., online first",
   "year": "2026",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.4171/JEMS/1757",
   "url": "https://doi.org/10.4171/JEMS/1757",
   "arxiv": "2409.08220"
@@ -24,7 +24,7 @@
   "title": "On Leonardo da Vinci's paradox",
   "venue": "preprint",
   "year": "2026",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "arxiv": "2609.26283",
   "url": "https://arxiv.org/abs/2609.26283"
  },
@@ -33,7 +33,7 @@
   "title": "Shapes of two-dimensional bubbles deformed by circulation",
   "venue": "Nonlinearity 13, 2131–2141",
   "year": "2000",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1088/0951-7715/13/6/313",
   "url": "https://doi.org/10.1088/0951-7715/13/6/313"
  },
@@ -42,7 +42,7 @@
   "title": "Global rigidity of two-dimensional bubbles",
   "venue": "Arch. Ration. Mech. Anal. 250, 104",
   "year": "2026",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1007/s00205-026-02262-9",
   "url": "https://doi.org/10.1007/s00205-026-02262-9",
   "arxiv": "2510.17557"
@@ -52,7 +52,7 @@
   "title": "The rise of a gas bubble in a viscous liquid",
   "venue": "J. Fluid Mech. 6, 113–130",
   "year": "1959",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112059000520",
   "url": "https://doi.org/10.1017/S0022112059000520"
  },
@@ -61,7 +61,7 @@
   "title": "The velocity of rise of distorted gas bubbles in a liquid of small viscosity",
   "venue": "J. Fluid Mech. 23, 749–766",
   "year": "1965",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112065001660",
   "url": "https://doi.org/10.1017/S0022112065001660"
  },
@@ -70,7 +70,7 @@
   "title": "Distorted gas bubbles at large Reynolds number",
   "venue": "J. Fluid Mech. 62, 163–183",
   "year": "1974",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112074000620",
   "url": "https://doi.org/10.1017/S0022112074000620"
  },
@@ -79,7 +79,7 @@
   "title": "Axisymmetric bubble or drop in a uniform flow",
   "venue": "J. Fluid Mech. 108, 89–100",
   "year": "1981",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112081002000",
   "url": "https://doi.org/10.1017/S0022112081002000"
  },
@@ -88,7 +88,7 @@
   "title": "The shape of an axisymmetric bubble in uniform motion",
   "venue": "Pramana – J. Phys. 65, 437–455",
   "year": "2005",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1007/BF02704202",
   "url": "https://doi.org/10.1007/BF02704202"
  },
@@ -97,7 +97,7 @@
   "title": "Hamiltonian theory for motions of bubbles in an infinite liquid",
   "venue": "J. Fluid Mech. 181, 349–379",
   "year": "1987",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S002211208700212X",
   "url": "https://doi.org/10.1017/S002211208700212X"
  },
@@ -106,7 +106,7 @@
   "title": "Deformation of a bubble or drop in a uniform flow",
   "venue": "J. Fluid Mech. 101, 673–686",
   "year": "1980",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112080001863",
   "url": "https://doi.org/10.1017/S0022112080001863"
  },
@@ -115,7 +115,7 @@
   "title": "On the shape of a two-dimensional bubble in uniform motion",
   "venue": "J. Fluid Mech. 244, 187–200",
   "year": "1992",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112092003021",
   "url": "https://doi.org/10.1017/S0022112092003021"
  },
@@ -131,7 +131,7 @@
   "title": "On the steady motion and small vibrations of a hollow vortex",
   "venue": "Phil. Trans. R. Soc. Lond. 175, 161–195",
   "year": "1884",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1098/rstl.1884.0008",
   "url": "https://doi.org/10.1098/rstl.1884.0008"
  },
@@ -140,7 +140,7 @@
   "title": "The motion of a vortex filament with axial flow",
   "venue": "Phil. Trans. R. Soc. Lond. A 272, 403–429",
   "year": "1972",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1098/rsta.1972.0055",
   "url": "https://doi.org/10.1098/rsta.1972.0055"
  },
@@ -149,7 +149,7 @@
   "title": "Toroidal bubbles with circulation in ideal hydrodynamics: a variational approach",
   "venue": "Phys. Rev. E 68, 056301",
   "year": "2003",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1103/PhysRevE.68.056301",
   "url": "https://doi.org/10.1103/PhysRevE.68.056301"
  },
@@ -158,7 +158,7 @@
   "title": "The toroidal bubble",
   "venue": "J. Fluid Mech. 32, 97–112",
   "year": "1968",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1017/S0022112068000601",
   "url": "https://doi.org/10.1017/S0022112068000601"
  },
@@ -167,7 +167,7 @@
   "title": "Motion of a bubble ring in a viscous fluid",
   "venue": "Phys. Fluids 25, 067104",
   "year": "2013",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1063/1.4811407",
   "url": "https://doi.org/10.1063/1.4811407"
  },
@@ -176,7 +176,7 @@
   "title": "Non-existence of thick bubble rings at low Weber numbers",
   "venue": "preprint",
   "year": "2026",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "arxiv": "2603.24217",
   "url": "https://arxiv.org/abs/2603.24217"
  },
@@ -185,7 +185,7 @@
   "title": "Instability of rotating cylindrical jets",
   "venue": "Appl. Sci. Res. A 8, 425–456",
   "year": "1959",
-  "check": "Crossref / publisher record, literature workflow (data/literature_verified.json)",
+  "check": "checked against the Crossref / publisher record",
   "doi": "10.1007/BF00411768",
   "url": "https://doi.org/10.1007/BF00411768"
  }

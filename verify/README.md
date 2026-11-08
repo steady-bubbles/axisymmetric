@@ -42,7 +42,7 @@ files).
 Not covered: uniqueness, dynamic stability, and the physical model itself.
 The flow equation for the sheet is of the first kind, and its conditioning
 worsens for thin rings. The last digits therefore rest on two studies:
-* the high-precision rerun `results/rings/rings_up_hp.json` (M = 240,
+* the M = 240 rerun of the first computation, `results/rings/rings_up_hp.json` (M = 240,
   r_h ≤ 5.2), which agrees with the standard run to 4·10⁻¹² in We (max
   4.1·10⁻¹²);
 * re-solves at r_h = 111, 613 and 1116 with M up to 240 and doubled panel

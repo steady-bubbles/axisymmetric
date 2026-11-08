@@ -17,6 +17,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from bubbles.continuation import Branch  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 out = sys.argv[1] if len(sys.argv) > 1 else 'results/branch.json'
 z_min = float(sys.argv[2]) if len(sys.argv) > 2 else 1e-5
 z_switch = 0.05

@@ -21,9 +21,10 @@ from these chains, each started from a ring of the first computation
   thinC   r_h 111    -> 1200    from rings_thin3.json:0   factor 1.10    M <= 240, thin-ring predictor
 
 The thin chain was stopped by hand at r_h = 24 (thinD and thinC, which start from
-rings with M = 128, cover the rest at a fraction of the cost); the touch chain
-stopped at r_h = 1.0e-5, where its next step did not finish the mode refinement
-(M 252 -> 316) in two hours. The down chain (r_h 0.039 -> 5.6e-3 with the
+rings with M = 128, cover the rest at a fraction of the cost). The touch chain was
+stopped at r_h = 1.0e-5: a further part re-solved that ring (M = 396) but did not
+finish the next step, and was not continued; the merge takes the ring at
+r_h = 8.6e-6 from rings_neck3.json. The down chain (r_h 0.039 -> 5.6e-3 with the
 curvature map, M <= 240) is kept for comparison: below r_h ~ 0.009 it leaves
 Fourier tails up to 8e-7, so the merge leaves those rings out, and where both are
 resolved it agrees with downN to 5e-13. up covers the range of upA + upB in one
@@ -34,7 +35,8 @@ With --hours=H the chains stop after H hours: the running ring is abandoned
 
 Re-running continues: a segment that has not reached its end is resumed from its
 last ring in a new part file (<chain><k>_p<j>.json). A part that adds no ring
-stops its chain.
+stops its chain. With the committed results/hires/rings every chain has reached its
+end, so to recompute, give a new outdir (and pass it to merge_hires_rings.py --dir=).
 
 Usage: python scripts/hires_rings.py outdir [--chains=touch,neck,downN,...] [--weights=4,3,...] [--hours=H]
 """
@@ -44,6 +46,10 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UP = 1.07
@@ -55,7 +61,8 @@ CHAINS = {
                   flags=['--tail=1e-13'])],
     'neck': [dict(start='results/rings/rings_neck.json:0', factor=1 / UP, stop=9.4e-4, M=400,
                   flags=['--neck', '--tail=1e-13'])],
-    'touch': [dict(start='results/rings/rings_neck3.json:0', factor=1 / UP, stop=8.6e-6, M=400,
+    # to r_h = 1.0e-5, where it was stopped (see above); it was started towards 8.6e-6
+    'touch': [dict(start='results/rings/rings_neck3.json:0', factor=1 / UP, stop=1.01e-5, M=400,
                    flags=['--neck', '--tail=1e-13'])],
     # the same branch cut into pieces at rings of the first computation, to run them in parallel
     'upA': [dict(start='results/rings/rings_up_hp.json:0', factor=UP, stop=0.486, M=240, flags=['--tail=1e-13'])],

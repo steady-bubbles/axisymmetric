@@ -14,7 +14,10 @@ the result always spans the whole branch; `source` in each record names its file
   downN, downN2 (neck map), down (curvature map, M = 240: under-resolved below r_h ~ 0.009)
   upA, upB, thin, thinD, thinC
 
-Usage: python scripts/merge_hires_rings.py [out.json] [--report]
+Usage: python scripts/merge_hires_rings.py [out.json] [--report] [--dir=results/hires/rings]
+
+--dir names the folder of the chain files (default: the committed chains); out.json
+defaults to results/hires/rings_merged.json.
 """
 import glob
 import json
@@ -93,7 +96,13 @@ def merge(report=False):
 
 
 if __name__ == '__main__':
+    if {'-h', '--help'} & set(sys.argv[1:]):
+        print(__doc__)
+        sys.exit()
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    for a in sys.argv[1:]:
+        if a.startswith('--dir='):
+            HIRES = os.path.abspath(a.split('=', 1)[1])
     pts = merge(report='--report' in sys.argv)
     out = args[0] if args else os.path.join(ROOT, 'results', 'hires', 'rings_merged.json')
     with open(out + '.tmp', 'w') as f:

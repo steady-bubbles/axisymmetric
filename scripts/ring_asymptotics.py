@@ -16,14 +16,15 @@ branch at z_eff, fits D_X = (X_ring - X_bubble(z_eff))/r_h by
 dA*log(1/r_h) + B + C*r_h*log(1/r_h) [+ E*r_h] and reports the leading
 coefficient X'(0) + dA next to the bubble slope X'(0).
 
-Usage: python scripts/ring_asymptotics.py [rings.json ...] [--branch=results/branch.json]
-           [--outdir=results/rings] [--rh-max=inf]
-  (default rings: results/rings/rings_down_part1.json, rings_down2.json, rings_neck*.json)
-Writes ring_branch.json, asymptotics.md and bubble_pole_potential.json (cache) to
-outdir, and the figure to results/figures/ring_asymptotics.png (with --outdir: to
-outdir/ring_asymptotics.png). For the high-resolution data:
-  python scripts/ring_asymptotics.py results/hires/rings_merged.json \
-      --branch=results/hires/branch.json --outdir=results/hires/asymptotics
+Usage: python scripts/ring_asymptotics.py [rings.json ...] [--branch=results/hires/branch.json]
+           [--outdir=results/hires/asymptotics] [--rh-max=0.0393]
+  (default rings: results/hires/rings_merged.json; --rh-max=inf takes all rings)
+Writes ring_branch.json, asymptotics.md, ring_asymptotics.png and
+bubble_pole_potential.json (a cache) to outdir. The defaults are the high-resolution
+data, written to results/hires/asymptotics/. For the first computation:
+  python scripts/ring_asymptotics.py results/rings/rings_down_part1.json \
+      results/rings/rings_down2.json results/rings/rings_neck.json results/rings/rings_neck2.json \
+      results/rings/rings_neck3.json --branch=results/branch.json --rh-max=inf --outdir=out
 """
 import json
 import os
@@ -38,23 +39,22 @@ import numpy as np  # noqa: E402
 from scipy.interpolate import CubicSpline  # noqa: E402
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 sys.path.insert(0, ROOT)
 from bubbles.bubble import BubbleState  # noqa: E402
 from bubbles.geometry import Panels, ParamMap  # noqa: E402
 
 RES = os.path.join(ROOT, 'results')
-RINGS = os.path.join(RES, 'rings')
 OPTS = dict(a[2:].split('=', 1) for a in sys.argv[1:] if a.startswith('--'))
-SRC = [a for a in sys.argv[1:] if not a.startswith('--')] or [os.path.join(RINGS, 'rings_down_part1.json'),
-                       os.path.join(RINGS, 'rings_down2.json'),
-                       os.path.join(RINGS, 'rings_neck.json'),
-                       os.path.join(RINGS, 'rings_neck2.json'),
-                       os.path.join(RINGS, 'rings_neck3.json')]
+SRC = [a for a in sys.argv[1:] if not a.startswith('--')] or [os.path.join(RES, 'hires', 'rings_merged.json')]
 Z_CUT = 0.25          # bubble frames used for X_bubble(z_eff)
-BRANCH = OPTS.get('branch', os.path.join(RES, 'branch.json'))
-RH_MAX = float(OPTS.get('rh-max', 'inf'))
-OUT = OPTS.get('outdir', RINGS)
+BRANCH = OPTS.get('branch', os.path.join(RES, 'hires', 'branch.json'))
+RH_MAX = float(OPTS.get('rh-max', '0.0393'))
+OUT = OPTS.get('outdir', os.path.join(RES, 'hires', 'asymptotics'))
 os.makedirs(OUT, exist_ok=True)
 CACHE = os.path.join(OUT, 'bubble_pole_potential.json')
 KEEP = ['r_h', 'We', 'lam', 'circulation', 'r_o', 'z_max', 'kappa1_waist', 'H_waist_rh',
@@ -256,8 +256,7 @@ def main():
     ax[0, 1].set_title('Bernoulli constant', fontsize=10, loc='left')
     ax[0, 2].set_title(r'circulation $|\Gamma|$ vs. bubble $2\varphi_{pole}$', fontsize=10, loc='left')
     fig.tight_layout()
-    out = (os.path.join(RES, 'figures', 'ring_asymptotics.png') if OUT == RINGS
-           else os.path.join(OUT, 'ring_asymptotics.png'))
+    out = os.path.join(OUT, 'ring_asymptotics.png')
     fig.savefig(out)
     print('wrote', out)
 

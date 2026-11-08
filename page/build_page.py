@@ -3,8 +3,8 @@
 Reads the computed data in results/ (page/data.py) and the checks in
 results/checks/, fills page/page_template.html and writes one self-contained
 HTML file: the figures' data are embedded, and MathJax is loaded from a CDN.
-The published copy is https://steady-bubbles.github.io/axisymmetric/ (its
-repository steady-bubbles/steady-bubbles.github.io holds only the built page).
+The published copy is https://steady-bubbles.github.io/axisymmetric/: a copy of
+build/index.html in steady-bubbles/steady-bubbles.github.io (axisymmetric/index.html).
 
 Usage: python page/build_page.py [out.html]      (default: build/index.html)
 """
@@ -16,6 +16,10 @@ import sys
 import time
 
 import numpy as np
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "page"))
@@ -152,7 +156,8 @@ def precision():
         fold_spread=float(max(fold) - min(fold)),
         dimple=[rnd(sp[k]['dimple_onset']['We'], 16) for k in levels],
         star=[rnd(sp[k]['star_loss']['We'], 16) for k in levels],
-        conv=[[rnd(c['z_pole'], 6), rnd(c['levels'][-1]['We'], 15), float(c['dWe']), float(c['dlam'])] for c in conv],
+        conv=[[rnd(c['z_pole'], 6), rnd(c['levels'][-1]['We'], 15), float(c['dWe']), float(c['dlam']),
+               c['levels'][-1]['N']] for c in conv],
         rings_hp=dict(n=len(rp), dWe=float(max(abs(r['dWe']) for r in rp)),
                       dlam=float(max(abs(r['dlam']) for r in rp)),
                       dcirc=float(max(abs(r['dcirculation']) for r in rp)),
@@ -209,7 +214,7 @@ def citation_order(tpl, refs):
 
 def resolve_citations(tpl):
     """Replace {{cite:a,b}} by [n, m] and {{references}} by the list of exactly the
-    cited works from data/references.json, numbered in citation_order."""
+    cited works from page/references.json, numbered in citation_order."""
     import html as H
     refs = load_references()
     pat = CITE

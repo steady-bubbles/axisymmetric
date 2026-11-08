@@ -19,6 +19,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from bubbles.continuation import Branch  # noqa: E402
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 
 def sphere_record(M=16, **opts):
     br = Branch(M=M, log=lambda *a: None, **opts)

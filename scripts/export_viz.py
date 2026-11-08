@@ -1,5 +1,5 @@
-"""Export the branch for the interactive explorer: per frame the meridian
-curve, surface speed and curvature along the arc, and streamlines.
+"""Export a bubble branch for the page: per frame the meridian curve, surface
+speed and curvature along the arc, and streamlines.
 
 z_max, aspect_ext = r_eq/z_max and u_max are taken from dense sampling of the
 surface (NDENSE points, refined by a parabola through the largest sample), not
@@ -7,8 +7,9 @@ from the quadrature nodes as in the branch records, which lie below the true
 maxima by up to 5e-7 (the sphere: z_max = 0.99999980 and u_max = 1.4999997
 instead of 1 and 1.5).
 
-Usage: python scripts/export_viz.py [results/branch.json] [results/viz/bubble_viz.json] [nproc]
-           [--step=1] [--reuse=earlier_viz.json]
+Usage: python scripts/export_viz.py [results/hires/branch.json] [results/hires/viz/bubble_viz.json]
+           [nproc] [--step=1] [--reuse=earlier_viz.json]
+(paths relative to the current directory; nproc defaults to BUBBLES_NPROC, else 3)
 --step=k exports every k-th state (and the last); the touching fit uses all states.
 --reuse takes the streamlines of frames with the same We and z_pole from an
 earlier export (the expensive part) and recomputes the rest.
@@ -27,6 +28,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from bubbles.bubble import BubbleState  # noqa: E402
 from bubbles.flowfield import StreamFunction, surface_samples  # noqa: E402
 from bubbles.geometry import Panels, ParamMap  # noqa: E402
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 R_MAX, Z_MAX = 3.2, 2.2
 NR, NZ = 129, 89
@@ -124,9 +129,10 @@ def streamlines(st, r, z):
 if __name__ == '__main__':
     opts = dict(a[2:].split('=', 1) for a in sys.argv[1:] if a.startswith('--'))
     argv = [a for a in sys.argv[1:] if not a.startswith('--')]
-    SRC = argv[0] if len(argv) > 0 else 'results/branch.json'
-    OUT = argv[1] if len(argv) > 1 else 'results/viz/bubble_viz.json'
-    NPROC = int(argv[2]) if len(argv) > 2 else 3
+    SRC = argv[0] if len(argv) > 0 else 'results/hires/branch.json'
+    OUT = argv[1] if len(argv) > 1 else 'results/hires/viz/bubble_viz.json'
+    NPROC = int(argv[2]) if len(argv) > 2 else int(os.environ.get('BUBBLES_NPROC', 3))
+    os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
     STEP = int(opts.get('step', 1))
     pts = json.load(open(SRC))
     sel = [pts[i] for i in sorted(set(range(0, len(pts), STEP)) | {len(pts) - 1})]

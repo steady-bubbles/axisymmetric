@@ -1,6 +1,6 @@
 """Independent Biot-Savart flow check of computed zero-flux rings.
 
-usage: python ring_check.py up:17 thin:7 ...   [--hi]  (--hi: tighter quadrature)
+usage: python verify/check_velocity.py up:17 thin:7 ...   [--hi]  (--hi: tighter quadrature)
 Writes results/verify/velocity_<tag>.json.
 """
 import json
@@ -13,6 +13,10 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 warnings.filterwarnings('ignore')
+
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 sys.path.insert(0, REPO)
