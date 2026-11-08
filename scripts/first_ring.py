@@ -14,8 +14,9 @@ was not kept, and this script does the same:
     python scripts/first_ring.py results/branch.json 0.03923612667872822 48 first_ring.npz
     python scripts/run_rings.py first_ring.npz first_ring.json 1.07 0.0392 128
 
-(about 6 min and 10 min on 4 cores). The second command only refines the start
-ring, since r_stop lies below it; the refined ring is first_ring.json[0].
+(about 4 and 7 min on 4 cores). The second command only refines the start ring,
+since r_stop lies below it; the refined ring, first_ring.json[0], agrees with
+rings_up.json:0 to 1e-12 in We and lambda.
 
 Usage: python scripts/first_ring.py branch.json r_h M out.npz
 """

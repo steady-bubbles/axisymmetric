@@ -90,7 +90,7 @@ numbers, with how each was checked, are in [docs/numerics.md](docs/numerics.md).
 
 ```
 pip install -e ".[test]"
-python -m pytest                       # the solver's tests, about 5 min
+python -m pytest                       # the solver's tests, about 3 min
 python page/build_page.py              # the page, from results/, into build/index.html (seconds)
 ```
 
@@ -129,7 +129,7 @@ chains start from its rings):
 | fold, dimple onset, loss of star-shapedness | `python scripts/special_points.py` | 1 h |
 | convergence in the resolution | `python scripts/convergence.py` | 5 min |
 | bubble spectra | `python scripts/bubble_sectors.py results/bubble_sectors_all.json --every=1 --m=0,1` | 10 min |
-| the first ring, r_h = 0.0392: a catenoidal neck glued into the touching bubble, then Newton | `python scripts/first_ring.py results/branch.json 0.03923612667872822 48 first_ring.npz` | 5 min |
+| the first ring, r_h = 0.0392: a catenoidal neck glued into the touching bubble, then Newton | `python scripts/first_ring.py results/branch.json 0.03923612667872822 48 first_ring.npz` | 4 min |
 | zero-flux rings, from the first ring or a stored one (`run.json:index`) | `python scripts/run_rings.py start out.json factor r_stop [M_max] [--neck] [--tail=1e-13] [--thin]` | 10 min – 4 h per run |
 | ring spectra | `python scripts/ring_sectors.py results/rings/ring_sectors_all.json results/rings/rings_{neck3,neck2,neck,down2,down,up,thin,thin2,thin3,thin7}.json --sectors=0o,0eQ,0eG,1e,1o --bounds --nev=4` (bash) | 25 min |
 | non-axisymmetric branch points | `python scripts/crossing_rings.py --m=2,3,4,5,6`, then `--m=1 --dQ=2e-4` | 40 min |
@@ -184,8 +184,8 @@ neck of rings with small holes; where both resolve a ring they agree to 5·10⁻
 * Every ring descends from the first ring, r_h = 0.039236 (`results/rings/rings_up.json:0`, and
   at M = 240 `rings_up_hp.json:0`). It was made by gluing a catenoidal neck into the touching
   bubble and solving with Newton's method; the original driver was not kept, and
-  `scripts/first_ring.py` does the same (refined by `run_rings.py` to M = 128, its ring agrees
-  with the stored one to better than 10⁻⁶ in We).
+  `scripts/first_ring.py` does the same: refined by `run_rings.py` to M = 128, its ring agrees
+  with the stored one to 10⁻¹² in We and λ.
 * For several runs of the first computation (`results/rings/rings_*.json`) the exact command
   lines were not recorded; their logs give the starting ring, and the files record the
   resolution of every ring. `rings_thin7.json` starts from a ring at r_h = 336 that is not kept.
