@@ -1,0 +1,2 @@
+14:40:30 chains ['down'], processes [4] of 4, output results/hires/rings
+14:40:30 down0: scripts/run_rings.py results/rings/rings_up_hp.json:0 results/hires/rings/down0_p0.json 0.9345794392523364 0.0056 240 --tail=1e-13  (4 processes)

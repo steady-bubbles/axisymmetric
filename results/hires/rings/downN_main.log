@@ -1,0 +1,5 @@
+15:37:22 chains ['downN'], processes [4] of 4, output results/hires/rings
+15:37:22 downN0: scripts/run_rings.py results/rings/rings_up_hp.json:0 results/hires/rings/downN0_p0.json 0.9345794392523364 0.0149 400 --neck --tail=1e-13  (4 processes)
+15:54:32 downN0: part 0 exited with 0, 16 rings
+15:54:32 downN: complete
+15:54:32 finished: [('downN', True)]

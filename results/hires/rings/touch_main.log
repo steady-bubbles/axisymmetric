@@ -1,0 +1,4 @@
+13:47:47 chains ['touch'], processes [4] of 4, output results/hires/rings
+13:47:47 touch0: scripts/run_rings.py results/hires/rings/touch0_p0_last.npz results/hires/rings/touch0_p1.json 0.9345794392523364 8.6e-06 400 --neck --tail=1e-13  (4 processes)
+15:47:58 chains ['touch'], processes [4] of 4, output results/hires/rings
+15:47:58 touch0: scripts/run_rings.py results/hires/rings/touch0_p1_last.npz results/hires/rings/touch0_p2.json 0.9345794392523364 8.6e-06 400 --neck --tail=1e-13  (4 processes)

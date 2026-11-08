@@ -1,0 +1,7 @@
+12:31:20 chains ['upB'], processes [4] of 4, output results/hires/rings
+12:31:20 upB0: scripts/run_rings.py results/rings/rings_up_hp.json:18 results/hires/rings/upB0_p0.json 1.07 5.3 240 --tail=1e-13  (4 processes)
+12:31:25 upB0: part 0 exited with 1, 0 rings
+12:31:25 upB0: no progress; stopping the chain
+12:31:25 finished: [('upB', False)]
+12:33:18 chains ['upB'], processes [4] of 4, output results/hires/rings
+12:33:18 upB0: scripts/run_rings.py results/rings/rings_up_hp.json:18 results/hires/rings/upB0_p0.json 1.07 5.3 240 --tail=1e-13  (4 processes)

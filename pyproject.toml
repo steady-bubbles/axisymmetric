@@ -1,0 +1,22 @@
+[project]
+name = "bubbles"
+version = "1.0.0"
+description = "Steady axisymmetric bubbles and bubble rings in an inviscid stream: boundary integral continuation at high precision"
+readme = "README.md"
+authors = [{ name = "Lukas Niebel" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "scipy>=1.10", "matplotlib>=3.7", "contourpy>=1.0"]
+
+[project.optional-dependencies]
+test = ["pytest", "mpmath"]
+
+[project.urls]
+Page = "https://steady-bubbles.github.io/axisymmetric/"
+Repository = "https://github.com/steady-bubbles/axisymmetric"
+
+[tool.setuptools]
+packages = ["bubbles"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "scripts"]

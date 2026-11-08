@@ -1,0 +1,2 @@
+13:43:32 chains ['upA'], processes [4] of 4, output results/hires/rings
+13:43:32 upA0: scripts/run_rings.py results/rings/rings_up_hp.json:0 results/hires/rings/upA0_p0.json 1.07 0.486 240 --tail=1e-13  (4 processes)

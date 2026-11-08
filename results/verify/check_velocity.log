@@ -1,0 +1,32 @@
+=== up:17: r_h=0.42223 r_o=1.5223 a_t=0.55004 z_max=0.39578 We=1.1155 max|gamma|=2.3521 circ=-2.6483512
+  inradius 0.395781 at r=0.968967 (a_t=0.550037)
+  (a) 37 interior pts, all inside=True, d/a_in in [0.100,1.000]: max|u|/max|gamma| = 7.70e-16 (median 9.7e-17)
+  (b) d/a_t        :   1.0e-02   5.0e-03   2.0e-03   1.0e-03
+      max|u.n|/g   :  8.91e-03  4.51e-03  1.82e-03  9.10e-04
+      max||u|-|g||/g:  1.84e-02  9.35e-03  3.77e-03  1.89e-03
+      max|u-gT|/g  :  1.84e-02  9.35e-03  3.77e-03  1.89e-03
+      inside |u|/g :  9.97e-15  3.05e-14  9.75e-14  1.41e-13
+      extrapolated to d=0: |u-gT|/g=4.00e-09 |u.n|/g=2.21e-09 inside 2.14e-13
+  (e) dynamic residual with Biot-Savart |u|^2 (extrapolated) and own H at 13 nodes: max 2.79e-08
+  (e) own curvature: |H_own-H_solver|max=1.48e-07 (via theta: 1.36e-11); max nodal |H-We/2 g^2-lam| = 1.67e-07 / 4.04e-08 (solver's own nodal 4.04e-08; scale 4.1); volume/(4pi/3)-1 = -6.11e-15
+  (c) flux(n=140)=-1.672e-16 flux(n=84)=-1.799e-16  int|u_z|dA=5.6392e-03; flux/(pi r_h^2 max|g|)=-1.27e-16, flux/(pi r_h^2 V)=-2.99e-16, flux/int|u_z|dA=-2.97e-14; u_z in [-0.0161,0.0224] u_z(axis)=0.022368 (1+Gamma/2R=-0.361946)
+  (d) circle rad_fac=1.5 (Ar=0.8251, Az=0.8251, outside=True, dmin/a_t=0.50): circ256=-2.648351171431 circ128=-2.648351171431 st.circulation=-2.648351171431 rel.err=+3.35e-16
+  (d) circle rad_fac=1.25 (Ar=0.6875, Az=0.6875, outside=True, dmin/a_t=0.25): circ256=-2.648351171431 circ128=-2.648351171431 st.circulation=-2.648351171431 rel.err=+3.35e-16
+  (d) ellipse rad_fac=None (Ar=0.7931, Az=0.7312, outside=True, dmin/a_t=0.38): circ256=-2.648351171431 circ128=-2.648351171431 st.circulation=-2.648351171431 rel.err=+3.35e-16
+  time 20s
+=== thin:7: r_h=32.788 r_o=32.949 a_t=0.080352 z_max=0.08035 We=0.00065828 max|gamma|=34.943 circ=-16.945762
+  inradius 0.0803502 at r=32.8683 (a_t=0.0803517)
+  (a) 37 interior pts, all inside=True, d/a_in in [0.100,1.000]: max|u|/max|gamma| = 5.38e-14 (median 6.7e-15)
+  (b) d/a_t        :   1.0e-02   5.0e-03   2.0e-03   1.0e-03
+      max|u.n|/g   :  4.11e-04  2.07e-04  8.32e-05  4.16e-05
+      max||u|-|g||/g:  9.90e-03  4.97e-03  2.00e-03  9.99e-04
+      max|u-gT|/g  :  9.90e-03  4.97e-03  2.00e-03  9.99e-04
+      inside |u|/g :  2.17e-12  4.38e-12  9.71e-12  1.95e-11
+      extrapolated to d=0: |u-gT|/g=5.07e-10 |u.n|/g=2.47e-11 inside 3.43e-11
+  (e) dynamic residual with Biot-Savart |u|^2 (extrapolated) and own H at 13 nodes: max 1.42e-09
+  (e) own curvature: |H_own-H_solver|max=5.18e-04 (via theta: 6.55e-09); max nodal |H-We/2 g^2-lam| = 5.18e-04 / 6.59e-09 (solver's own nodal 5.69e-10; scale 12.5); volume/(4pi/3)-1 = -3.98e-13
+  (c) flux(n=320)=-4.063e-11 flux(n=192)=-3.607e-11  int|u_z|dA=3.0284e+03; flux/(pi r_h^2 max|g|)=-3.44e-16, flux/(pi r_h^2 V)=-1.20e-14, flux/int|u_z|dA=-1.34e-14; u_z in [-32.1871,0.7422] u_z(axis)=0.742230 (1+Gamma/2R=0.742217)
+  (d) circle rad_fac=1.5 (Ar=0.1205, Az=0.1205, outside=True, dmin/a_t=0.50): circ256=-16.945761873594 circ128=-16.945761873594 st.circulation=-16.945761873594 rel.err=+6.29e-16
+  (d) circle rad_fac=1.25 (Ar=0.1004, Az=0.1004, outside=True, dmin/a_t=0.25): circ256=-16.945761873594 circ128=-16.945761873594 st.circulation=-16.945761873594 rel.err=+4.19e-16
+  (d) ellipse loop intersects the tube -- discarded
+  time 21s

@@ -1,0 +1,126 @@
+   refine: M 216 -> 160 (res_hi 4.3e-07, tail 9.0e-09)
+       it 0: |F|=3.151e-13 |dY|=1.339e-10 step=1.0 We=1.197680478156 lam=-0.1717324420 r_h=0.005581 circ=-3.39486306
+       it 1: |F|=4.509e-14 |dY|=4.434e-13 step=1.0 We=1.197680478156 lam=-0.1717324420 r_h=0.005581 circ=-3.39486306
+      We=1.197680478156 lam=-0.1717324420 N=1344
+start r_h=0.005581 We=1.197680478156
+       it 0: |F|=1.365e-01 |dY|=8.356e-04 step=1.0 We=1.186733015869 lam=-0.1736109336 r_h=0.004467 circ=-3.42170097
+       it 1: |F|=1.384e-02 |dY|=5.557e-04 step=1.0 We=1.187021765517 lam=-0.1736337214 r_h=0.004465 circ=-3.42130989
+       it 2: |F|=7.671e-04 |dY|=6.952e-05 step=1.0 We=1.187012239359 lam=-0.1736370859 r_h=0.004465 circ=-3.42133032
+       it 3: |F|=3.346e-05 |dY|=4.924e-06 step=1.0 We=1.187013619325 lam=-0.1736368927 r_h=0.004465 circ=-3.42132895
+       it 4: |F|=1.509e-06 |dY|=1.773e-07 step=1.0 We=1.187013638868 lam=-0.1736369171 r_h=0.004465 circ=-3.42132893
+       it 5: |F|=1.327e-07 |dY|=6.164e-09 step=1.0 We=1.187013637303 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+       it 6: |F|=6.997e-09 |dY|=6.839e-10 step=1.0 We=1.187013637424 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+       it 7: |F|=2.971e-10 |dY|=4.522e-11 step=1.0 We=1.187013637420 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+       it 8: |F|=1.307e-11 |dY|=1.519e-12 step=1.0 We=1.187013637420 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+   refine: M 160 -> 200 (res_hi 1.1e-08, tail 2.2e-10)
+       it 0: |F|=1.634e-13 |dY|=6.632e-11 step=1.0 We=1.187013637420 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+       it 1: |F|=5.495e-14 |dY|=2.000e-13 step=1.0 We=1.187013637420 lam=-0.1736369166 r_h=0.004465 circ=-3.42132893
+      We=1.187013637420 lam=-0.1736369166 N=1680
+  1 r_h=4.464812e-03 We=1.187013637420 lam=-0.1736369166 r_o=2.447297 zmax=0.15593 circ=-3.42132893 H_w*r_h=-0.0008 M=200 N=1680 res_hi=4.5e-11 tail=2e-15 t=442s
+       it 0: |F|=1.612e-01 |dY|=7.355e-04 step=1.0 We=1.177777942617 lam=-0.1750811436 r_h=0.003573 circ=-3.44437302
+       it 1: |F|=1.634e-02 |dY|=5.221e-04 step=1.0 We=1.178007260072 lam=-0.1750992425 r_h=0.003572 circ=-3.44405180
+       it 2: |F|=9.363e-04 |dY|=6.568e-05 step=1.0 We=1.178000332727 lam=-0.1751017808 r_h=0.003572 circ=-3.44406743
+       it 3: |F|=3.888e-05 |dY|=4.652e-06 step=1.0 We=1.178001332987 lam=-0.1751016307 r_h=0.003572 circ=-3.44406636
+       it 4: |F|=1.580e-06 |dY|=1.838e-07 step=1.0 We=1.178001351681 lam=-0.1751016506 r_h=0.003572 circ=-3.44406634
+       it 5: |F|=1.183e-07 |dY|=4.935e-09 step=1.0 We=1.178001350410 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+       it 6: |F|=6.983e-09 |dY|=4.755e-10 step=1.0 We=1.178001350494 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+       it 7: |F|=2.852e-10 |dY|=3.436e-11 step=1.0 We=1.178001350492 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+       it 8: |F|=1.117e-11 |dY|=1.350e-12 step=1.0 We=1.178001350492 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+   refine: M 200 -> 252 (res_hi 2.0e-10, tail 5.2e-12)
+       it 0: |F|=2.620e-13 |dY|=6.891e-11 step=1.0 We=1.178001350492 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+       it 1: |F|=6.078e-14 |dY|=2.625e-13 step=1.0 We=1.178001350492 lam=-0.1751016501 r_h=0.003572 circ=-3.44406634
+      We=1.178001350492 lam=-0.1751016501 N=2112
+  2 r_h=3.571850e-03 We=1.178001350492 lam=-0.1751016501 r_o=2.467746 zmax=0.15520 circ=-3.44406634 H_w*r_h=-0.0006 M=252 N=2112 res_hi=6.8e-11 tail=5e-16 t=1253s
+multiprocessing/connection.py", line 205, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 432, in _send_bytes
+    self._send(header + buf)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 389, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+    ~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/queues.py", line 397, in put
+    self._writer.send_bytes(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 205, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 432, in _send_bytes
+    self._send(header + buf)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 389, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/queues.py", line 397, in put
+    self._writer.send_bytes(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 205, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 432, in _send_bytes
+    self._send(header + buf)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 389, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+Process ForkPoolWorker-3:
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/pool.py", line 131, in worker
+    put((job, i, result))
+    ~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/queues.py", line 397, in put
+    self._writer.send_bytes(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 205, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 432, in _send_bytes
+    self._send(header + buf)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 389, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/pool.py", line 136, in worker
+    put((job, i, (False, wrapped)))
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/queues.py", line 397, in put
+    self._writer.send_bytes(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 205, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 432, in _send_bytes
+    self._send(header + buf)
+    ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 389, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe

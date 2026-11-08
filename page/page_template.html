@@ -1,0 +1,729 @@
+<title>Axisymmetric Bubbles</title>
+<meta name="description" content="Steady axisymmetric bubbles and bubble rings in an inviscid stream: computed branches, connecting the near-spherical bubbles to thin bubble rings.">
+<style>
+/* Look: follows lukasniebel.github.io and the da Vinci Bubble Explorer: warm paper background,
+   GitHub-markdown greys and thin rules, the site's green for the selected state, the system
+   font stack, 600-weight headings over a rule. Blue marks bubbles, orange marks rings
+   (a colour-blind-safe pair, checked in both themes); asymptotic predictions are dashed ink.
+   Layout: a single reading column of panels: the bifurcation diagram first, then the state
+   on the slider, then the checks against the papers, then precision and method. */
+:root {
+  --bg: #faf8f3;
+  --surface: #ffffff;
+  --ink: #24292e;
+  --ink-2: #444d56;
+  --muted: #6a737d;
+  --grid: #eaecef;
+  --axis: #c6cbd1;
+  --line: #dfe2e5;
+  --accent: #27ac13;
+  --accent-ink: #1b800e;
+  --bub: #0366d6;
+  --ring: #e36209;
+  --flow: #b3bac2;
+  --vacuum: #e8ebee;
+  --sheet: #a7adb4;
+  --run-bg: rgba(39, 172, 19, 0.11);
+  --shadow: rgba(27, 31, 35, 0.12);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  --radius: 3px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #191814; --surface: #22211c; --ink: #ece9e2; --ink-2: #c5c1b8; --muted: #9a958b;
+    --grid: #2f2d28; --axis: #4b4841; --line: #3a3832; --accent: #4cbf3a; --accent-ink: #62cc50;
+    --bub: #3d8ee0; --ring: #d7712a; --flow: #57544d; --vacuum: #2f2d28; --sheet: #6d6a63;
+    --run-bg: rgba(76, 191, 58, 0.15); --shadow: rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #191814; --surface: #22211c; --ink: #ece9e2; --ink-2: #c5c1b8; --muted: #9a958b;
+  --grid: #2f2d28; --axis: #4b4841; --line: #3a3832; --accent: #4cbf3a; --accent-ink: #62cc50;
+  --bub: #3d8ee0; --ring: #d7712a; --flow: #57544d; --vacuum: #2f2d28; --sheet: #6d6a63;
+  --run-bg: rgba(76, 191, 58, 0.15); --shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 40px;
+}
+a { color: var(--accent-ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; line-height: 1.25; }
+h1 { font-size: clamp(26px, 3.2vw, 32px); padding-bottom: 0.3em; border-bottom: 1px solid var(--accent); }
+h2 { font-size: 20px; }
+h3 { font-size: inherit; color: var(--ink); }
+p { margin: 0; }
+i { font-style: italic; }
+sub, sup { font-size: 0.72em; line-height: 0; }
+.eyebrow { font-size: inherit; font-style: italic; color: var(--muted); }
+.lede { font-size: inherit; }
+.num, .mono { font-family: inherit; font-variant-numeric: tabular-nums; }
+header { display: flex; flex-direction: column; gap: 10px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.panel > h2 { padding-bottom: 0.3em; border-bottom: 1px solid var(--accent); }
+.caption { font-size: inherit; color: var(--ink); }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+.seg { display: inline-flex; align-items: center; gap: 0; border: 0; margin: 0; padding: 0; flex-wrap: wrap; }
+.seg legend { float: left; font-size: inherit; color: var(--muted); margin-right: 8px; padding: 0; line-height: 28px; }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.seg label { font-size: inherit; padding: 3px 10px; border: 1px solid var(--axis); margin-left: -1px; background: var(--bg); color: var(--ink-2); cursor: pointer; }
+.seg label:first-of-type { margin-left: 0; border-radius: var(--radius) 0 0 var(--radius); }
+.seg label:last-of-type { border-radius: 0 var(--radius) var(--radius) 0; }
+.seg input:checked + label { background: var(--surface); color: var(--ink); border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); position: relative; }
+.seg input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; position: relative; z-index: 1; }
+label.opt { font-size: inherit; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; color: var(--ink-2); }
+label.opt input { accent-color: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: inherit; color: var(--ink-2); }
+.legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.legend > span > svg { flex: none; overflow: visible; width: 22px; height: 12px; }
+.chart { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.chart > svg { width: 100%; height: auto; display: block; overflow: visible; touch-action: pan-y; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 6px 9px; font-size: 12px; box-shadow: 0 3px 12px var(--shadow); white-space: nowrap; z-index: 5; font-variant-numeric: tabular-nums; }
+.tip b { font-weight: 600; }
+.home { display: inline-block; margin-bottom: 0.6rem; font-size: 0.95rem; color: var(--muted); text-decoration: none; }
+.home:hover, .home:focus-visible { color: var(--ink); text-decoration: underline; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.nav input[type=range] { flex: 1 1 260px; min-width: 0; accent-color: var(--accent); }
+button.ctl { font: inherit; font-size: inherit; padding: 4px 11px; border-radius: var(--radius); border: 1px solid var(--axis); box-shadow: inset 0 -1px 0 var(--axis); background: var(--bg); color: var(--ink); cursor: pointer; }
+button.ctl:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pos { font-family: inherit; font-size: inherit; color: var(--ink-2); min-width: 9ch; }
+.jumps { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.jumps .k { font-size: inherit; color: var(--muted); margin-right: 2px; }
+.meridian { border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); padding: 8px 6px 2px; }
+.meridian > svg { display: block; width: 100%; max-width: 900px; height: auto; margin: 0 auto; }
+.meridian .note { font-size: inherit; color: var(--muted); text-align: center; padding: 2px 8px 6px; }
+.m-border { fill: none; stroke: var(--line); stroke-width: 1; }
+.facts { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.facts-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 16px; }
+.big { display: flex; flex-direction: column; min-width: 0; }
+.big .v { font-size: 30px; font-weight: 600; font-family: inherit; font-variant-numeric: tabular-nums; line-height: 1.15; overflow-wrap: anywhere; }
+.big .k { font-size: inherit; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: inherit; padding: 2px 9px; border-radius: var(--radius); border: 1px solid var(--line); color: var(--ink-2); }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+dl.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 28px; margin: 0; font-size: inherit; }
+dl.kv > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 4px 0; border-bottom: 1px solid var(--grid); min-width: 0; }
+dl.kv dt { color: var(--muted); }
+dl.kv dd { margin: 0; font-family: inherit; font-size: inherit; font-variant-numeric: tabular-nums; text-align: right; overflow-wrap: anywhere; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+.card { position: relative; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card h3 { display: flex; align-items: center; gap: 8px; }
+.card > svg { width: 100%; height: auto; display: block; overflow: visible; touch-action: pan-y; }
+.refs { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.card .pred { font-size: inherit; color: var(--ink-2); }
+.card .res { font-size: inherit; color: var(--ink-2); }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+table { border-collapse: collapse; width: 100%; font-size: inherit; }
+th, td { padding: 6px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { background: var(--bg); font-weight: 600; color: var(--ink); white-space: nowrap; }
+td.n { font-family: inherit; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+tbody tr:last-child td { border-bottom: 0; }
+.ok { color: var(--accent-ink); font-weight: 600; }
+.eq { font-family: Georgia, "Times New Roman", serif; font-size: inherit; padding: 10px 0 10px 18px; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow-x: auto; }
+.intro { display: flex; flex-direction: column; gap: 10px; }
+.text { display: flex; flex-direction: column; gap: 12px; }
+.text > h2 { padding-bottom: 0.3em; border-bottom: 1px solid var(--accent); }
+/* running text fills the column, like the boxes, and re-wraps as the window narrows */
+.lede, .text > p, .caption, .card .res, .refs li { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.math { overflow-x: auto; padding: 4px 0; }
+.math mjx-container[display="true"] { margin: 0.4em 0 !important; }
+.cite a { color: var(--accent-ink); }
+.refs li { padding-left: 2px; }
+.refs li:target { background: var(--run-bg); }
+button.ctl.icon { display: inline-flex; align-items: center; justify-content: center; padding: 4px 9px; }
+button.ctl[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); box-shadow: inset 0 -2px 0 var(--accent); }
+.foot { display: block; padding-top: 16px; border-top: 1px solid var(--accent); text-align: center; font-size: inherit; color: var(--muted); }
+footer { color: var(--muted); overflow-wrap: anywhere; }
+/* svg classes */
+.c-grid { stroke: var(--grid); stroke-width: 1; fill: none; }
+.c-axis { stroke: var(--axis); stroke-width: 1; fill: none; }
+.c-tick { font: 11px var(--font-sans); fill: var(--muted); font-variant-numeric: tabular-nums; }
+.c-lab { font: 12px var(--font-sans); fill: var(--ink-2); }
+.c-ann { font: 11.5px var(--font-sans); fill: var(--ink); }
+.c-halo { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.s-bub { stroke: var(--bub); fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.s-ring { stroke: var(--ring); fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.s-pred { stroke: var(--ink-2); fill: none; stroke-width: 1.4; stroke-dasharray: 6 4; }
+.s-pred-top { stroke: var(--ink); stroke-width: 1.8; stroke-dasharray: 5 4; }
+.s-link { stroke: var(--ink-2); fill: none; stroke-width: 1.4; stroke-dasharray: 1.5 3; }
+.s-touch { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 4 4; fill: none; }
+.d-bub { fill: var(--bub); stroke: var(--surface); stroke-width: 1.5; }
+.d-ring { fill: var(--ring); stroke: var(--surface); stroke-width: 1.5; }
+.d-dense { stroke: none; }
+.nw { white-space: nowrap; }
+.d-hollow-ring { fill: var(--surface); stroke: var(--ring); stroke-width: 1.5; }
+.d-special { fill: var(--ink); stroke: var(--surface); stroke-width: 2; }
+.d-cross { fill: var(--surface); stroke: var(--ink); stroke-width: 1.3; }
+.d-cur { fill: none; stroke: var(--accent); stroke-width: 3; }
+.d-cur-core { fill: var(--accent); stroke: var(--surface); stroke-width: 1.5; }
+.m-flow { stroke: var(--flow); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+.m-axis { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 10 3 2 3; fill: none; vector-effect: non-scaling-stroke; }
+.m-vac { fill: var(--vacuum); stroke: none; }
+.m-out-bub { fill: none; stroke: var(--bub); stroke-width: 2.4; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.m-out-ring { fill: none; stroke: var(--ring); stroke-width: 2.4; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.m-frame { fill: var(--surface); stroke: none; }
+.hit { fill: transparent; stroke: none; cursor: crosshair; }
+@media (max-width: 820px) {
+  body { padding-block: 18px 32px; }
+  .panel { padding: 14px 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap" lang="en">
+  <header class="intro">
+    <a class="home" href="https://steady-bubbles.github.io/">← Steady bubbles</a>
+    <h1>Axisymmetric bubbles</h1>
+    <p class="lede">We consider the local bubble and bubble ring families rigorously constructed in {{cite:mns}} and {{cite:ms}} and continue them numerically. It turns out that they are connected. The near-spherical bubbles flatten, pass a largest Weber number and end when the two poles touch. The bubble rings start from that same touching bubble and, as their hole opens, become the thin rings of {{cite:ms}}. To prove this connection rigorously remains an interesting open problem.</p>
+  </header>
+
+  <section class="text" aria-labelledby="problem-title">
+    <h2 id="problem-title">The problem</h2>
+    <p>We consider steady axisymmetric solutions of the Euler equations with surface tension, where by the Young–Laplace law the pressure jumps across the interface by \(\sigma H\), with \(\sigma\) the surface tension and \(H\) the mean curvature. A bubble \(B\), filled with vacuum, moves with constant velocity \(V e_z\) through an inviscid, incompressible fluid of density \(\rho\) that is at rest at infinity. In the frame moving with the bubble the flow is steady and, outside the bubble, irrotational: \(u = \nabla\varphi\). After rescaling lengths by the radius \(R\) of the ball with the same volume and velocities by \(V\), a single parameter remains, the Weber number</p>
+    <div class="math">\[ \mathrm{We} = \frac{\rho V^2 R}{\sigma}. \]</div>
+    <p>Bernoulli's law together with the Young–Laplace law turns the problem into an overdetermined free boundary value problem for the bubble \(B\) and the velocity potential \(\varphi\):</p>
+    <div class="math">\[ \begin{cases} \Delta \varphi = 0 & \text{in } \mathbb{R}^3 \setminus \overline{B}, \\[2pt] \partial_n \varphi = 0 & \text{on } \partial B, \\[2pt] \nabla \varphi \to -e_z & \text{as } |x| \to \infty, \\[2pt] H - \dfrac{\mathrm{We}}{2}\, |\nabla \varphi|^2 = \lambda & \text{on } \partial B, \\[2pt] |B| = \dfrac{4\pi}{3}. \end{cases} \]</div>
+    <p>Here \(H\) is the sum of the principal curvatures of \(\partial B\) (\(H = 2\) on the unit sphere), and \(\lambda\) is an unknown constant. For a given \(B\) the first three equations determine \(\varphi\) and the fourth is the extra condition that selects the shape. We look for \(B\) axisymmetric about the \(z\)-axis and symmetric under \(z \mapsto -z\). This is the hollow-vortex case of the problem studied in {{cite:mns}}. When \(B\) is a solid torus, a bubble ring, the flow may circulate around the tube, as in {{cite:ms}}; the rings then form a two-parameter family, and we follow the rings with zero net flux through the hole.</p>
+    {{prior_work}}
+  </section>
+
+  <section class="panel" aria-labelledby="diagram-title">
+    <h2 id="diagram-title">Bifurcation diagram</h2>
+    <p class="caption">Every point on the two curves is a computed steady state; click one to show it below. Horizontally the Weber number. Vertically the geometry, on a log scale: above the dashed line the pole height \(z_{\mathrm{pole}}\) of a bubble, from the sphere (\(z_{\mathrm{pole}} = 1\)) at the top down to the touching bubble; below it the hole radius \(r_{\mathrm{h}}\) of a ring, from the touching bubble down to thin rings with \(r_{\mathrm{h}} \approx 1200\).</p>
+    <div class="controls">
+      <fieldset class="seg" id="xscale">
+        <legend>Weber number axis</legend>
+        <input type="radio" name="xscale" id="xs-lin" value="lin" checked><label for="xs-lin">linear</label>
+        <input type="radio" name="xscale" id="xs-log" value="log"><label for="xs-log">log</label>
+      </fieldset>
+      <label class="opt"><input type="checkbox" id="opt-pred" checked> predicted asymptotics</label>
+      <label class="opt"><input type="checkbox" id="opt-cross" checked> non-axisymmetric branch points</label>
+    </div>
+    <div class="legend" id="diag-legend"></div>
+    <div class="chart" id="diag-wrap"><svg id="diag" viewBox="0 0 760 520" role="img" aria-label="Bifurcation diagram: Weber number against pole height for bubbles and hole radius for rings"></svg><div class="tip" id="diag-tip" hidden></div></div>
+    <p class="caption">The dashed horizontal line is the touching bubble (\(z_{\mathrm{pole}} = 0 = r_{\mathrm{h}}\)); dotted ends join the last computed bubble and the first computed ring to it. Both curves reach it at the same Weber number \(\mathrm{We}^* = 1.1331\). The dashed curves are the first-order prediction of {{cite:mns}} near the sphere and the zero-flux thin rings of {{cite:ms}}. Diamonds mark where non-axisymmetric rings branch off.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="state-title">
+    <h2 id="state-title">Along the branch</h2>
+    <div class="nav">
+      <button class="ctl" id="prev" type="button" aria-label="Previous state">◀</button>
+      <button class="ctl icon" id="play" type="button" aria-label="Play or pause" aria-pressed="false"><svg viewBox="0 0 26 16" width="26" height="16" aria-hidden="true"><path d="M2 2 L12 8 L2 14 Z" fill="currentColor"/><rect x="15.5" y="2" width="3" height="12" fill="currentColor"/><rect x="21" y="2" width="3" height="12" fill="currentColor"/></svg></button>
+      <button class="ctl" id="next" type="button" aria-label="Next state">▶</button>
+      <input type="range" id="slider" min="0" max="1" value="0" aria-label="State along the branch">
+      <span class="pos" id="pos"></span>
+    </div>
+    <div class="jumps" id="jumps"><span class="k">Jump to</span></div>
+    <div class="meridian" id="meridian-wrap">
+      <svg id="meridian" viewBox="0 0 694 480" role="img" aria-label="Meridian section of the selected state with streamlines"></svg>
+      <div class="note" id="meridian-note"></div>
+    </div>
+    <div class="facts">
+      <div class="facts-head">
+        <div class="big"><span class="v" id="f-we"></span><span class="k">Weber number We of this state</span></div>
+        <span class="chip" id="regime"><span class="dot" id="regime-dot"></span><span id="regime-text"></span></span>
+      </div>
+      <dl class="kv" id="f-kv"></dl>
+    </div>
+    <p class="caption">Section through the symmetry axis (dash-dotted), with \(r\) and \(z\) at equal scale. The shaded region is the bubble; the thin lines are streamlines in the frame of the bubble, and the arrow shows its direction of motion. Rings too large for the window are shown as a close-up of the tube, with the streamlines that circle it.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="asym-title">
+    <h2 id="asym-title">Do the predicted asymptotics hold?</h2>
+    <p class="caption">The two families are described in one limit each, and the two branches meet in a third. In each chart the dots are computed states and the dashed line is the prediction.</p>
+    <div class="cards">
+      <div class="card"><h3><span class="ok">✓</span> Near the sphere</h3><p class="pred">{{cite:mns}}: \(\chi = 1 + \frac{9}{32}\,\mathrm{We} + O(\mathrm{We}^2)\)</p><svg id="ch-mns" viewBox="0 0 360 250" role="img" aria-label="Aspect ratio against Weber number near the sphere"></svg><div class="tip" id="ch-mns-tip" hidden></div><p class="res" id="res-mns"></p></div>
+      <div class="card"><h3><span class="ok">✓</span> Where bubbles meet rings</h3><p class="pred">Both sides: \(\mathrm{We} - \mathrm{We}^* \approx 2.0364\, z\)</p><div class="legend" id="lg-touch"></div><svg id="ch-touch" viewBox="0 0 360 250" role="img" aria-label="Distance of the Weber number from the touching value against distance from touching"></svg><div class="tip" id="ch-touch-tip" hidden></div><p class="res" id="res-touch"></p></div>
+      <div class="card"><h3><span class="ok">✓</span> Thin rings</h3><p class="pred">{{cite:ms}}, zero flux through the hole</p><svg id="ch-ms" viewBox="0 0 360 250" role="img" aria-label="Weber number against ring radius for thin rings"></svg><div class="tip" id="ch-ms-tip" hidden></div><p class="res" id="res-ms"></p></div>
+    </div>
+  </section>
+
+  <section class="text" aria-labelledby="method-title">
+    <h2 id="method-title">Method</h2>
+    <p><b>Shapes.</b> The meridian of a bubble is a curve in the half plane \(r \ge 0\). We describe it by its tangent angle, expanded in a Fourier sine series whose symmetries encode regularity on the axis and the reflection \(z \mapsto -z\); the curve then closes by construction. The cross-section of a ring is described in the same way, with a parametrisation that concentrates points in its narrow neck near the axis.</p>
+    <p><b>Flow.</b> For a bubble, \(\varphi\) solves an exterior Neumann problem. We write it as a boundary integral equation on the meridian, with the kernels integrated over the azimuthal angle in closed form (complete elliptic integrals), and solve it by a high-order Nyström method with corrections for the singular and nearly singular integrals. For a ring we represent the flow by a vortex sheet on its surface; the sheet strength follows from the condition of zero flux through the hole, and the circulation \(\Gamma\) from the sheet strength.</p>
+    <p><b>Continuation.</b> The boundary condition \(H - \tfrac{\mathrm{We}}{2}|\nabla\varphi|^2 = \lambda\), projected onto Fourier modes, is solved together with the volume constraint by Newton's method, with \(\lambda\) and the shape as unknowns. Pseudo-arclength continuation carries the bubbles from the sphere through the fold; the pole height and then the hole radius serve as parameters towards and beyond the touching bubble. The resolution is increased along the way, every value is computed at several resolutions, and a second, independent solver (a different shape representation and flow solver) reproduces the largest Weber number to 13 digits.</p>
+    <p><b>Bifurcations.</b> The steady states are the critical points of the energy \(|\partial B| - \tfrac{\mathrm{We}}{2}\, m_{zz}\) at fixed volume, where \(m_{zz}\) is the added mass. Along the whole branch we compute the eigenvalues of its second variation, separately for perturbations with azimuthal wave number \(m\) that are even or odd under \(z \mapsto -z\). A branch can bifurcate only where an eigenvalue crosses zero. Within the axisymmetric class (\(m = 0\)) we found no bifurcation: the eigenvalues change sign only at the two folds, the largest Weber number of the bubbles and that of the rings. In particular no pear-shaped bubbles branch off. For the thinnest rings, with hole radius above about 340, the smallest eigenvalue drops below the accuracy of the computation.</p>
+    <p><b>Other bifurcations.</b> Along the bubble branch we found no crossing for any \(m\), so no non-axisymmetric bubble branches off it. The rings are different. At hole radius 0.078 a branch with an off-centre hole (\(m = 1\)) branches off, and from hole radius 0.67 on, one beaded branch for each \(m = 2, 3, \dots\), at the hole radii where a hollow tube with swirl becomes unstable to varicose (Rayleigh–Plateau) perturbations {{cite:ponstein}}; there are more and more of them as the rings grow. These are the diamonds in the bifurcation diagram. If the bubble may also rotate about its direction of motion, bubbles moving on helical paths appear {{cite:davinci}}.</p>
+    <p><b>Values excluded in {{cite:ms}}.</b> The construction of thin rings in {{cite:ms}} covers every limiting value of the circulation Weber number \(\rho\Gamma^2/(4\pi^2\bar\varepsilon\sigma)\), with \(\bar\varepsilon\) the radius of the cross-section, except \(3, 4, 5, \dots\). At these values the linearised problem degenerates, and {{cite:ms}} expect rings with a non-circular cross-section to branch off, as for two-dimensional bubbles with circulation, the limit of the cross-section: there the circle bifurcates at these values {{cite:wegmanncrowdy}}, and it is the only solution below the first one, 3 {{cite:niebel2d}}. These would be axisymmetric branches. On the zero-flux rings this Weber number is at most 1.1, near the touching bubble, and below 0.3 once the rings are thin, so the excluded values are never reached; they belong to rings with a strong backflow through the hole, which we do not follow here.</p>
+  </section>
+
+  <section class="text" aria-labelledby="refs-title">
+    <h2 id="refs-title">References</h2>
+    {{references}}
+  </section>
+
+  <footer class="foot">This webpage was created by <a href="https://lukasniebel.github.io">Lukas Niebel</a> with the help of Claude Opus.</footer>
+</div>
+
+<script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]] }, svg: { fontCache: "global" }, startup: { typeset: true } };</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<script>
+const D = /*__DATA__*/null;
+const NS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs || {}) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function clear(e) { while (e.firstChild) e.removeChild(e.firstChild); }
+const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+const sup = s => String(s).split("").map(c => SUP[c] || c).join("");
+function sci(x, d = 2) {
+  if (x === 0) return "0";
+  const e = Math.floor(Math.log10(Math.abs(x)));
+  if (e >= -3 && e <= 3) return fix(x, d);
+  const m = x / Math.pow(10, e);
+  return (Math.abs(m - Math.round(m)) < 1e-9 && d <= 1 ? Math.round(m) : m.toFixed(d - 1)) + "·10" + sup(e);
+}
+function fix(x, sig = 4) {
+  if (x === 0) return "0";
+  const e = Math.floor(Math.log10(Math.abs(x)));
+  const dec = Math.max(0, sig - 1 - e);
+  return x.toFixed(Math.min(dec, 14));
+}
+const dec10 = k => "10" + sup(k);
+const tickFmt = v => Math.abs(v) >= 1e4 || (Math.abs(v) < 1e-3 && v !== 0) ? sci(v, 2) : String(+v.toPrecision(6));
+
+/* ---------- frames ---------- */
+const FR = [];
+D.bubbles.forEach((f, i) => FR.push({ kind: "bubble", i, f, We: f.We, lam: f.lam, z: f.z_pole, rmax: f.r_eq }));
+D.rings.forEach((f, i) => FR.push({ kind: "ring", i, f, We: f.We, lam: f.lam, z: f.r_h, rmax: f.r_o }));
+const NB = D.bubbles.length;
+const S = D.special;
+function shapeOf(fr) {
+  const f = fr.f;
+  if (fr.kind === "bubble") return { r: f.r.map(v => v * 1e-4), z: f.z.map(v => v * 1e-4) };
+  return { r: f.r.map(v => f.r0 + v * f.xy), z: f.z.map(v => v * f.xy) };
+}
+function regime(fr) {
+  if (fr.kind === "bubble") {
+    if (Math.abs(fr.z / S.fold.z_pole - 1) < 0.01) return "bubble, at the fold";
+    if (fr.z > S.fold.z_pole) return "bubble, before the fold";
+    if (fr.lam >= 0) return "bubble, past the fold";
+    if (fr.z > S.star.z_pole) return "bubble, dimpled poles";
+    return "bubble, not star-shaped";
+  }
+  if (Math.abs(fr.z / S.ring_fold.r_h - 1) < 0.035) return "ring, at its fold";
+  if (fr.z < S.ring_fold.r_h) return "ring, before its fold";
+  if (fr.z < 5) return "ring, past its fold";
+  return "thin ring";
+}
+
+/* ---------- scales and axes ---------- */
+function scale(ax, r0, r1) {
+  const [d0, d1] = ax.dom;
+  if (ax.type === "log") {
+    const l0 = Math.log10(d0), l1 = Math.log10(d1);
+    return v => r0 + (Math.log10(v) - l0) / (l1 - l0) * (r1 - r0);
+  }
+  return v => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+}
+function niceTicks(d0, d1, n) {
+  const span = d1 - d0, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= step0);
+  const out = [];
+  for (let v = Math.ceil(d0 / step) * step; v <= d1 + 1e-12; v += step) out.push(+v.toFixed(12));
+  return out;
+}
+function logTicks(d0, d1, maxN = 7) {
+  const a = Math.ceil(Math.log10(d0) - 1e-9), b = Math.floor(Math.log10(d1) + 1e-9);
+  let step = 1; while ((b - a) / step + 1 > maxN) step++;
+  const out = []; for (let k = a; k <= b; k += step) out.push(k); return out;
+}
+function frameChart(svg, o) {
+  clear(svg);
+  const [W, H] = [o.W || 420, o.H || 250];
+  const m = Object.assign({ l: 52, r: 14, t: 10, b: 40 }, o.m || {});
+  const sx = scale(o.x, m.l, W - m.r), sy = scale(o.y, H - m.b, m.t);
+  const gGrid = el("g", {}, svg);
+  if (o.x.type === "log") {
+    for (const k of logTicks(...o.x.dom, o.x.maxN || 7)) {
+      const X = sx(Math.pow(10, k));
+      el("line", { x1: X, x2: X, y1: m.t, y2: H - m.b, class: "c-grid" }, gGrid);
+      el("text", { x: X, y: H - m.b + 15, "text-anchor": "middle", class: "c-tick" }, gGrid, dec10(k));
+    }
+  } else {
+    for (const v of niceTicks(...o.x.dom, o.x.n || 5)) {
+      const X = sx(v);
+      el("line", { x1: X, x2: X, y1: m.t, y2: H - m.b, class: "c-grid" }, gGrid);
+      el("text", { x: X, y: H - m.b + 15, "text-anchor": "middle", class: "c-tick" }, gGrid, o.x.fmt ? o.x.fmt(v) : String(v));
+    }
+  }
+  if (o.y.type === "log") {
+    for (const k of logTicks(...o.y.dom, o.y.maxN || 7)) {
+      const Y = sy(Math.pow(10, k));
+      el("line", { x1: m.l, x2: W - m.r, y1: Y, y2: Y, class: "c-grid" }, gGrid);
+      el("text", { x: m.l - 6, y: Y + 4, "text-anchor": "end", class: "c-tick" }, gGrid, dec10(k));
+    }
+  } else {
+    for (const v of niceTicks(...o.y.dom, o.y.n || 5)) {
+      const Y = sy(v);
+      el("line", { x1: m.l, x2: W - m.r, y1: Y, y2: Y, class: "c-grid" }, gGrid);
+      el("text", { x: m.l - 6, y: Y + 4, "text-anchor": "end", class: "c-tick" }, gGrid, o.y.fmt ? o.y.fmt(v) : String(+v.toPrecision(6)));
+    }
+  }
+  el("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, class: "c-axis" }, gGrid);
+  el("line", { x1: m.l, x2: m.l, y1: m.t, y2: H - m.b, class: "c-axis" }, gGrid);
+  if (o.xlabel) { const t = el("text", { x: (m.l + W - m.r) / 2, y: H - 6, "text-anchor": "middle", class: "c-lab" }, svg); t.innerHTML = o.xlabel; }
+  if (o.ylabel) { const t = el("text", { x: 12, y: (m.t + H - m.b) / 2, "text-anchor": "middle", class: "c-lab", transform: `rotate(-90 12 ${(m.t + H - m.b) / 2})` }, svg); t.innerHTML = o.ylabel; }
+  const id = svg.id + "-clip";
+  const defs = el("defs", {}, svg);
+  const cp = el("clipPath", { id }, defs);
+  el("rect", { x: m.l, y: m.t - 2, width: W - m.l - m.r, height: H - m.t - m.b + 4 }, cp);
+  const g = el("g", { "clip-path": `url(#${id})` }, svg);
+  return { sx, sy, g, m, W, H, svg };
+}
+function path(pts) { let s = ""; pts.forEach((p, i) => { if (isFinite(p[0]) && isFinite(p[1])) s += (s ? "L" : "M") + p[0].toFixed(2) + " " + p[1].toFixed(2); }); return s; }
+function legendItem(box, kind, cls, html) {
+  const sp = document.createElement("span");
+  const sv = el("svg", { width: 22, height: 12, viewBox: "0 0 22 12", "aria-hidden": "true" }, sp);
+  if (kind === "line") el("line", { x1: 1, x2: 21, y1: 6, y2: 6, class: cls }, sv);
+  else if (kind === "dot") el("circle", { cx: 11, cy: 6, r: 4, class: cls }, sv);
+  else if (kind === "diamond") el("path", { d: "M11 1L16 6L11 11L6 6Z", class: cls }, sv);
+  else if (kind === "square") el("rect", { x: 7, y: 2, width: 8, height: 8, class: cls }, sv);
+  else if (kind === "tri") el("path", { d: "M11 1.5L16 10.5H6Z", class: cls }, sv);
+  const t = document.createElement("span"); t.innerHTML = html; sp.appendChild(t);
+  box.appendChild(sp);
+}
+function marker(g, kind, x, y, cls, size = 4.5) {
+  if (kind === "square") return el("rect", { x: x - size, y: y - size, width: 2 * size, height: 2 * size, class: cls }, g);
+  if (kind === "tri") return el("path", { d: `M${x} ${y - size * 1.2}L${x + size * 1.1} ${y + size * 0.8}H${x - size * 1.1}Z`, class: cls }, g);
+  if (kind === "diamond") return el("path", { d: `M${x} ${y - size * 1.2}L${x + size * 1.2} ${y}L${x} ${y + size * 1.2}L${x - size * 1.2} ${y}Z`, class: cls }, g);
+  return el("circle", { cx: x, cy: y, r: size, class: cls }, g);
+}
+function showTip(tip, wrap, html, px, py) {
+  tip.innerHTML = html; tip.hidden = false;
+  const W = wrap.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+  let x = px + 12, y = py - th - 8;
+  if (x + tw > W) x = px - tw - 12;
+  if (y < 0) y = py + 14;
+  tip.style.left = Math.max(0, x) + "px"; tip.style.top = y + "px";
+}
+function svgPoint(svg, ev) {
+  const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+  return [(ev.clientX - r.left) / r.width * vb.width, (ev.clientY - r.top) / r.height * vb.height, ev.clientX - r.left, ev.clientY - r.top];
+}
+
+/* ---------- state ---------- */
+let cur = 0;
+const listeners = [];
+function select(k) { cur = Math.max(0, Math.min(FR.length - 1, k)); listeners.forEach(fn => fn()); }
+
+
+/* ---------- bifurcation diagram ---------- */
+const S0 = 4e-6;
+const yB = z => Math.log10(z / S0), yR = rh => -Math.log10(rh / S0);
+const diagState = { xs: "lin", pred: true, cross: true };
+let diagPts = [];
+function drawDiagram() {
+  const svg = $("diag"); clear(svg);
+  const W = 760, H = 520, m = { l: 70, r: 22, t: 14, b: 44 };
+  const xlog = diagState.xs === "log";
+  const xd = xlog ? [3e-8, 3] : [0, 2.0];
+  const sx = scale({ type: xlog ? "log" : "lin", dom: xd }, m.l, W - m.r);
+  const yd = [yR(3000), yB(1) + 0.25];
+  const sy = scale({ type: "lin", dom: yd }, H - m.b, m.t);
+  const X = v => sx(xlog ? Math.max(v, xd[0]) : v);
+  const gG = el("g", {}, svg);
+  // x ticks
+  if (xlog) for (const k of logTicks(...xd, 9)) { const x = sx(Math.pow(10, k)); el("line", { x1: x, x2: x, y1: m.t, y2: H - m.b, class: "c-grid" }, gG); el("text", { x, y: H - m.b + 16, "text-anchor": "middle", class: "c-tick" }, gG, dec10(k)); }
+  else for (const v of niceTicks(...xd, 8)) { const x = sx(v); el("line", { x1: x, x2: x, y1: m.t, y2: H - m.b, class: "c-grid" }, gG); el("text", { x, y: H - m.b + 16, "text-anchor": "middle", class: "c-tick" }, gG, String(v)); }
+  // y ticks: bubbles (z_pole) above, rings (r_h) below
+  for (let k = 0; k >= -5; k--) { const y = sy(yB(Math.pow(10, k))); el("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, class: "c-grid" }, gG); el("text", { x: m.l - 6, y: y + 4, "text-anchor": "end", class: "c-tick" }, gG, k === 0 ? "1" : dec10(k)); }
+  for (let k = -5; k <= 3; k++) { const y = sy(yR(Math.pow(10, k))); el("line", { x1: m.l, x2: W - m.r, y1: y, y2: y, class: "c-grid" }, gG); el("text", { x: m.l - 6, y: y + 4, "text-anchor": "end", class: "c-tick" }, gG, k === 0 ? "1" : dec10(k)); }
+  el("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, class: "c-axis" }, gG);
+  el("line", { x1: m.l, x2: m.l, y1: m.t, y2: H - m.b, class: "c-axis" }, gG);
+  const y0 = sy(0);
+  el("line", { x1: m.l, x2: W - m.r, y1: y0, y2: y0, class: "s-touch" }, gG);
+  el("text", { x: xlog ? m.l + 6 : W - m.r - 4, y: y0 - 5, "text-anchor": xlog ? "start" : "end", class: "c-tick" }, gG, "touching: z_pole = 0 = r_h");
+  const lab1 = el("text", { x: 14, y: (m.t + y0) / 2, "text-anchor": "middle", class: "c-lab", transform: `rotate(-90 14 ${(m.t + y0) / 2})` }, svg); lab1.innerHTML = "bubbles: pole height <tspan font-style='italic'>z</tspan><tspan font-size='9' dy='3'>pole</tspan>";
+  const lab2 = el("text", { x: 14, y: (y0 + H - m.b) / 2, "text-anchor": "middle", class: "c-lab", transform: `rotate(-90 14 ${(y0 + H - m.b) / 2})` }, svg); lab2.innerHTML = "rings: hole radius <tspan font-style='italic'>r</tspan><tspan font-size='9' dy='3'>h</tspan>";
+  el("text", { x: (m.l + W - m.r) / 2, y: H - 6, "text-anchor": "middle", class: "c-lab" }, svg, "Weber number We" + (xlog ? " (log scale)" : ""));
+  const defs = el("defs", {}, svg); const cp = el("clipPath", { id: "diag-clip" }, defs);
+  el("rect", { x: m.l, y: m.t - 4, width: W - m.l - m.r, height: H - m.t - m.b + 8 }, cp);
+  const g = el("g", { "clip-path": "url(#diag-clip)" }, svg);
+  // the branch
+  // the sphere (We = 0) has no place on a log axis; there the curve starts with the small-We
+  // bubbles of the check below the first computed one
+  const b0 = D.bubbles.filter(f => f.We === 0), bpos = D.bubbles.filter(f => f.We > 0);
+  const mnsLow = D.mns.We.map((w, i) => [w, D.mns.z_pole[i]]).filter(p => p[0] < bpos[0].We);
+  const bpts = (xlog ? [] : b0.map(f => [f.We, f.z_pole])).concat(mnsLow, bpos.map(f => [f.We, f.z_pole]))
+    .map(p => [X(p[0]), sy(yB(p[1]))]);
+  el("path", { d: path(bpts), class: "s-bub" }, g);
+  el("path", { d: path(D.rings.map(f => [X(f.We), sy(yR(f.r_h))])), class: "s-ring" }, g);
+  const lb = D.bubbles[NB - 1], fr0 = D.rings[0];
+  el("path", { d: path([[X(lb.We), sy(yB(lb.z_pole))], [X(S.touching.We), y0], [X(fr0.We), sy(yR(fr0.r_h))]]), class: "s-link" }, g);
+  // predictions, drawn over the computed branch so that they stay visible
+  if (diagState.pred) {
+    const mns = []; for (let k = 0; k <= 120; k++) { const We = xlog ? Math.pow(10, -4 + 3.9 * k / 120) : 0.9 * k / 120; mns.push([X(We), sy(yB(1 - 3 * We / 16))]); }
+    el("path", { d: path(mns), class: "s-pred s-pred-top" }, g);
+    const ms = D.ms_curve.map(p => [X(p[1]), sy(yR(p[0]))]);
+    el("path", { d: path(ms), class: "s-pred s-pred-top" }, g);
+  }
+  // non-axisymmetric branch points
+  if (diagState.cross) for (const c of D.crossings) marker(g, "diamond", X(c.We), sy(yR(c.r_h)), "d-cross", 3.6);
+  // special points
+  const sp = [
+    [S.fold.We, sy(yB(S.fold.z_pole)), "fold (largest We)", 9, -7, "start"],
+    [S.dimple.We, sy(yB(S.dimple.z_pole)), "dimple onset", 9, 13, "start"],
+    [S.touching.We, y0, "touching bubble, We* = " + S.touching.We.toFixed(4), -8, -9, "end"],
+    [S.ring_fold.We, sy(yR(S.ring_fold.r_h)), "ring fold", 9, 4, "start"],
+  ];
+  const fitsRight = (x, t) => x + 6.6 * t.length <= W - m.r - 2;   // label t placed from x, anchored at its start
+  // on the log axis the fold sits near the right edge, where the bubble curve turns down: its two
+  // labels go to the left of the descending curve, below the flat part
+  const yF = sy(yB(S.fold.z_pole)), xL = X(S.touching.We) - 8;
+  const logPlace = { "fold (largest We)": [xL, yF + 18], "dimple onset": [xL, yF + 33] };
+  for (const [w, y, t, dx, dy, anc] of sp) {
+    marker(g, "dot", X(w), y, "d-special", 4.5);
+    if (xlog && logPlace[t]) {
+      el("text", { x: logPlace[t][0], y: logPlace[t][1], "text-anchor": "end", class: "c-ann c-halo" }, g, t);
+      continue;
+    }
+    const flip = anc === "start" && !fitsRight(X(w) + dx, t);
+    el("text", { x: X(w) + (flip ? -dx : dx), y: y + dy, "text-anchor": flip ? "end" : anc, class: "c-ann c-halo" }, g, t);
+  }
+  if (diagState.cross) {
+    const c1 = D.crossings[0], c2 = D.crossings[1];
+    const lx = X(xlog ? 2.2 : 1.72), ly = sy(yR(0.012));
+    el("path", { d: `M${X(c1.We) + 4} ${sy(yR(c1.r_h)) - 4}L${lx - 4} ${ly + 3}`, class: "c-axis" }, g);
+    el("text", { x: lx, y: ly + 4, "text-anchor": xlog ? "end" : "start", class: "c-ann c-halo" }, g, "m = 1");
+    const flip2 = !fitsRight(X(c2.We) + 8, "m = 2 … 6");
+    el("text", { x: X(c2.We) + (flip2 ? -8 : 8), y: sy(yR(c2.r_h)) + (flip2 ? -8 : 14), "text-anchor": flip2 ? "end" : "start", class: "c-ann c-halo" }, g, "m = 2 … 6");
+  }
+  if (diagState.pred) {
+    el("text", { x: X(xlog ? 2e-4 : 0.05), y: sy(yB(1)) + 16, class: "c-ann c-halo" }, g, "sphere");
+    const p = D.ms_curve[D.ms_curve.length - 30];
+    el("text", { x: X(p[1]) + 10, y: sy(yR(p[0])) + (xlog ? 16 : 4), class: "c-ann c-halo" }, g, "thin rings");
+  }
+  // current
+  const gc = el("g", {}, g);
+  diagPts = FR.map(fr => [X(fr.We), fr.kind === "bubble" ? sy(yB(fr.z)) : sy(yR(fr.z))]);
+  const drawCur = () => { clear(gc); const [x, y] = diagPts[cur]; el("circle", { cx: x, cy: y, r: 7.5, class: "d-cur" }, gc); el("circle", { cx: x, cy: y, r: 3, class: "d-cur-core" }, gc); };
+  drawCur(); diagDrawCur = drawCur;
+  el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, class: "hit" }, svg);
+}
+let diagDrawCur = () => {};
+function nearestDiag(px, py) {
+  let best = -1, bd = 1e9;
+  diagPts.forEach((p, k) => { const d = Math.hypot(p[0] - px, p[1] - py); if (d < bd) { bd = d; best = k; } });
+  return bd < 30 ? best : -1;
+}
+function frTip(fr) {
+  const f = fr.f;
+  return fr.kind === "bubble"
+    ? `<b>bubble</b><br>We = ${fr.We.toFixed(10)}<br>z<sub>pole</sub> = ${sci(fr.z, 5)}<br>λ = ${fr.lam.toFixed(6)}`
+    : `<b>ring</b><br>We = ${sci(fr.We, 8)}<br>r<sub>h</sub> = ${sci(fr.z, 5)}<br>λ = ${sci(fr.lam, 6)}<br>|Γ| = ${sci(Math.abs(f.circulation), 6)}`;
+}
+function setupDiagram() {
+  const lg = $("diag-legend");
+  legendItem(lg, "line", "s-bub", "bubbles");
+  legendItem(lg, "line", "s-ring", "rings, zero flux through the hole");
+  legendItem(lg, "line", "s-pred", "predicted asymptotics");
+  legendItem(lg, "dot", "d-special", "fold, onset, touching");
+  legendItem(lg, "diamond", "d-cross", "non-axisymmetric rings branch off");
+  for (const id of ["xs-lin", "xs-log"]) $(id).addEventListener("change", e => { diagState.xs = e.target.value; drawDiagram(); });
+  $("opt-pred").addEventListener("change", e => { diagState.pred = e.target.checked; drawDiagram(); });
+  $("opt-cross").addEventListener("change", e => { diagState.cross = e.target.checked; drawDiagram(); });
+  const svg = $("diag"), tip = $("diag-tip"), wrap = $("diag-wrap");
+  svg.addEventListener("pointermove", ev => {
+    const [x, y, cx, cy] = svgPoint(svg, ev); const k = nearestDiag(x, y);
+    if (k < 0) { tip.hidden = true; return; }
+    showTip(tip, wrap, frTip(FR[k]) + "<br><span style='color:var(--muted)'>click to show</span>", cx, cy);
+  });
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; });
+  svg.addEventListener("click", ev => { const [x, y] = svgPoint(svg, ev); const k = nearestDiag(x, y); if (k >= 0) select(k); });
+  drawDiagram();
+  listeners.push(() => diagDrawCur());
+}
+
+/* ---------- meridian section ---------- */
+const WIN = { r: 3.2, z: 2.2 };
+function drawMeridian() {
+  const fr = FR[cur], f = fr.f, svg = $("meridian"); clear(svg);
+  const ML = 44, MT = 6, PW = 640, PH = 440;                 // plot area inside the 694 x 480 viewBox
+  const sh = shapeOf(fr);
+  const fits = fr.kind === "bubble" || f.r_o <= WIN.r - 0.05;
+  const zoom = !fits;
+  let rc = 0, w = WIN.r, h = WIN.z;                          // window centre and half-sizes (equal scale)
+  if (zoom) [rc, w, h] = f.fwin;
+  const k = PW / (2 * w);
+  const P = (r, z) => [ML + PW / 2 + (r - rc) * k, MT + PH / 2 - z * k];
+  const PR = (x, z) => [ML + PW / 2 + x * k, MT + PH / 2 - z * k];   // x relative to the window centre
+  el("rect", { x: ML, y: MT, width: PW, height: PH, class: "m-frame" }, svg);
+  const defs = el("defs", {}, svg); const cp = el("clipPath", { id: "mer-clip" }, defs);
+  el("rect", { x: ML, y: MT, width: PW, height: PH }, cp);
+  const g = el("g", { "clip-path": "url(#mer-clip)" }, svg);
+  if (!zoom && f.lines) {
+    for (const [, a] of f.lines) {
+      const pts = []; for (let i = 0; i < a.length; i += 2) pts.push([a[i] * 1e-3, a[i + 1] * 1e-3]);
+      for (const [sr, sz] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]) el("path", { d: path(pts.map(q => P(sr * q[0], sz * q[1]))), class: "m-flow" }, g);
+    }
+  } else if (zoom && f.flines) {
+    const u = h * 1e-3;
+    for (const [, a] of f.flines) {
+      const pts = []; for (let i = 0; i < a.length; i += 2) pts.push([a[i] * u, a[i + 1] * u]);
+      for (const sz of [1, -1]) el("path", { d: path(pts.map(q => PR(q[0], sz * q[1]))), class: "m-flow" }, g);
+    }
+  }
+  if (!zoom || rc - w < 0) { const ax = P(0, 0)[0]; el("line", { x1: ax, x2: ax, y1: MT, y2: MT + PH, class: "m-axis" }, g); }
+  const cls = fr.kind === "bubble" ? "m-out-bub" : "m-out-ring";
+  const outline = [];
+  if (fr.kind === "bubble") {
+    const q1 = sh.r.map((r, i) => [r, sh.z[i]]);
+    outline.push(q1.concat(q1.slice().reverse().map(q => [q[0], -q[1]])).concat(q1.map(q => [-q[0], -q[1]])).concat(q1.slice().reverse().map(q => [-q[0], q[1]])));
+  } else {
+    const top = sh.r.map((r, i) => [r, sh.z[i]]);
+    const sec = top.concat(top.slice().reverse().map(q => [q[0], -q[1]]));
+    outline.push(sec);
+    if (!zoom) outline.push(sec.map(q => [-q[0], q[1]]));
+  }
+  for (const o of outline) {
+    const d = path(o.map(q => P(...q))) + "Z";
+    el("path", { d, class: "m-vac" }, g);
+    el("path", { d, class: cls }, g);
+  }
+  // stream arrow
+  el("path", { d: `M${ML + 18} ${MT + PH - 10} L${ML + 18} ${MT + PH - 46} M${ML + 12} ${MT + PH - 38} L${ML + 18} ${MT + PH - 48} L${ML + 24} ${MT + PH - 38}`, stroke: "currentColor", fill: "none", "stroke-width": 1.5, style: "color: var(--muted)" }, svg);
+  el("text", { x: ML + 30, y: MT + PH - 24, class: "c-tick" }, svg, "direction of motion");
+  // axes
+  el("rect", { x: ML, y: MT, width: PW, height: PH, class: "m-border" }, svg);
+  const tw = t => 6.3 * t.length;                             // width of a tick label (11 px digits)
+  for (const v of niceTicks(rc - w, rc + w, 7)) {
+    const [x] = P(v, 0), t = tickFmt(v);
+    el("line", { x1: x, x2: x, y1: MT + PH, y2: MT + PH + 5, class: "c-axis" }, svg);
+    if (x - tw(t) / 2 >= 0 && x + tw(t) / 2 <= ML + PW) el("text", { x, y: MT + PH + 18, "text-anchor": "middle", class: "c-tick" }, svg, t);
+  }
+  for (const v of niceTicks(-h, h, 5)) {
+    const [, y] = P(0, v), t = tickFmt(v);
+    el("line", { x1: ML - 5, x2: ML, y1: y, y2: y, class: "c-axis" }, svg);
+    if (y < MT + 20) continue;                                 // keep clear of the axis label z
+    const tx = el("text", { x: ML - 8, y: y + 4, "text-anchor": "end", class: "c-tick" }, svg, t);
+    if (tw(t) > ML - 10) tx.style.fontSize = "9px";
+  }
+  el("text", { x: ML + PW, y: MT + PH + 32, "text-anchor": "end", class: "c-lab" }, svg, "r");
+  el("text", { x: 10, y: MT + 12, class: "c-lab" }, svg, "z");
+  $("meridian-note").innerHTML = zoom
+    ? `close-up of the tube, centred at r = ${fix(rc, 6)}; the axis is ${rc - w < 0 ? "the dash-dotted line" : "outside the view"}`
+    : "r and z at equal scale";
+}
+function drawFacts() {
+  const fr = FR[cur], f = fr.f;
+  // thin rings beyond r_h = 130: the round-off floor of the residual leaves a scatter of a few 1e-9 in We
+  $("f-we").textContent = fr.kind === "bubble" ? fr.We.toFixed(12) : fr.z > 130 ? sci(fr.We, 8) : (fr.We > 1e-3 ? fr.We.toFixed(12) : sci(fr.We, 10));
+  $("regime-text").textContent = regime(fr);
+  $("regime-dot").style.background = fr.kind === "bubble" ? "var(--bub)" : "var(--ring)";
+  const kv = $("f-kv"); kv.innerHTML = "";
+  const row = (k, v) => { kv.insertAdjacentHTML("beforeend", `<div><dt>${k}</dt><dd>${v}</dd></div>`); };
+  row("Bernoulli constant <i>λ</i>", sci(fr.lam, 10));
+  if (fr.kind === "bubble") {
+    row("pole height <i>z</i><sub>pole</sub>", sci(f.z_pole, 8));
+    row("equatorial radius <i>r</i><sub>eq</sub>", f.r_eq.toFixed(8));
+    row("half-thickness <i>z</i><sub>max</sub>", f.z_max.toFixed(8));
+    row("aspect ratio <i>r</i><sub>eq</sub>/<i>z</i><sub>max</sub>", f.aspect_ext.toFixed(6));
+    row("circulation |<i>Γ</i>|", "none (no hole)");
+  } else {
+    row("hole radius <i>r</i><sub>h</sub>", sci(f.r_h, 8));
+    row("outer radius <i>r</i><sub>o</sub>", sci(f.r_o, 8));
+    row("half-thickness <i>z</i><sub>max</sub>", sci(f.z_max, 8));
+    row("aspect ratio <i>r</i><sub>o</sub>/<i>z</i><sub>max</sub>", sci(f.r_o / f.z_max, 6));
+    row("circulation |<i>Γ</i>|/(<i>VR</i>)", sci(Math.abs(f.circulation), 10));
+  }
+  row("largest |<i>κ</i><sub>1</sub>|", sci(f.kmax, 5));
+  row("largest speed |<i>u</i>|/<i>V</i>", sci(f.u_max, 6));
+  $("pos").textContent = `${cur + 1} / ${FR.length}`;
+  $("slider").value = cur;
+}
+function setupState() {
+  const sl = $("slider"); sl.max = FR.length - 1;
+  sl.addEventListener("input", () => select(+sl.value));
+  $("prev").addEventListener("click", () => select(cur - 1));
+  $("next").addEventListener("click", () => select(cur + 1));
+  let timer = null;
+  $("play").addEventListener("click", () => {
+    const stop = () => { clearInterval(timer); timer = null; $("play").setAttribute("aria-pressed", "false"); };
+    if (timer) { stop(); return; }
+    if (cur >= FR.length - 1) select(0);
+    $("play").setAttribute("aria-pressed", "true");
+    timer = setInterval(() => { if (cur >= FR.length - 1) { stop(); return; } select(cur + 1); }, 140);
+  });
+  const nearestWe = (kind, pred) => { let b = 0, bd = 1e9; FR.forEach((fr, k) => { if (fr.kind === kind) { const d = pred(fr); if (d < bd) { bd = d; b = k; } } }); return b; };
+  const jumps = [
+    ["Sphere", 0],
+    ["Fold", nearestWe("bubble", fr => Math.abs(fr.z - S.fold.z_pole))],
+    ["Dimple onset", nearestWe("bubble", fr => Math.abs(fr.z - S.dimple.z_pole))],
+    ["Last bubble", NB - 1],
+    ["First ring", NB],
+    ["Ring fold", nearestWe("ring", fr => Math.abs(Math.log(fr.z / S.ring_fold.r_h)))],
+    ["r_h = 1", nearestWe("ring", fr => Math.abs(Math.log(fr.z)))],
+    ["Thin end", FR.length - 1],
+  ];
+  const box = $("jumps");
+  for (const [t, k] of jumps) { const b = document.createElement("button"); b.className = "ctl"; b.type = "button"; b.textContent = t; b.addEventListener("click", () => select(k)); box.appendChild(b); }
+  listeners.push(drawMeridian, drawFacts);
+}
+
+/* ---------- asymptotics ---------- */
+function asymptotics() {
+  const M = D.mns, ms = D.ms, T = D.touch;
+  // near the sphere: aspect ratio against We with the first-order prediction
+  const pts1 = M.We.map((w, i) => [w, M.chi[i]]).filter(q => q[0] >= 0.01)
+    .concat(D.bubbles.filter(b => b.We >= 0.01 && b.We <= 0.62 && b.z_pole > S.fold.z_pole).map(b => [b.We, b.r_eq / b.z_pole]))
+    .sort((a, b) => a[0] - b[0]);
+  const c1 = frameChart($("ch-mns"), { W: 360, H: 250, x: { type: "lin", dom: [0, 0.6], n: 6 }, y: { type: "lin", dom: [1, 1.22], n: 5 }, xlabel: "Weber number We", ylabel: "aspect ratio χ", m: { l: 50, b: 40 } });
+  const h1 = [];
+  for (const q of pts1) { marker(c1.g, "dot", c1.sx(q[0]), c1.sy(q[1]), "d-bub", 3); h1.push([c1.sx(q[0]), c1.sy(q[1]), q]); }
+  el("path", { d: path([[c1.sx(0), c1.sy(1)], [c1.sx(0.6), c1.sy(1 + 0.6 * 9 / 32)]]), class: "s-pred s-pred-top" }, c1.g);
+  hoverPoints($("ch-mns"), h1, e => `We = ${e[2][0].toFixed(4)}<br>χ computed ${e[2][1].toFixed(6)}<br>χ first order ${(1 + 9 / 32 * e[2][0]).toFixed(6)}`);
+  $("res-mns").innerHTML = `The computed curve leaves the predicted line tangentially. Its slope at \\(\\mathrm{We} = 0\\) is ${M.chi_coef[0].toFixed(13)}, against \\(9/32 = 0.28125\\). The predicted shape and pole curvature match too.`;
+
+  // touching
+  const lg2 = $("lg-touch");
+  legendItem(lg2, "dot", "d-bub", "bubbles, \\(z = z_{\\mathrm{pole}}\\)");
+  legendItem(lg2, "dot", "d-ring", "rings, \\(z = r_{\\mathrm{h}} \\log(1/r_{\\mathrm{h}})\\)");
+  const c2 = frameChart($("ch-touch"), { W: 360, H: 250, x: { type: "log", dom: [5e-6, 0.3], maxN: 5 }, y: { type: "log", dom: [1e-5, 0.6], maxN: 5 }, xlabel: "distance from touching z", ylabel: "We − We*", m: { l: 50, b: 40 } });
+  const h2 = [];
+  for (const q of T.bub) if (q[1] > 0) { marker(c2.g, "dot", c2.sx(q[0]), c2.sy(q[1]), "d-bub d-dense", 2.6); h2.push([c2.sx(q[0]), c2.sy(q[1]), q, "bubble"]); }
+  for (const q of T.ring) if (q[1] > 0) { marker(c2.g, "dot", c2.sx(q[0]), c2.sy(q[1]), "d-ring d-dense", 1.7); h2.push([c2.sx(q[0]), c2.sy(q[1]), q, "ring"]); }
+  el("path", { d: path([[c2.sx(5e-6), c2.sy(S.touch_slope * 5e-6)], [c2.sx(0.3), c2.sy(S.touch_slope * 0.3)]]), class: "s-pred s-pred-top" }, c2.g);
+  hoverPoints($("ch-touch"), h2, e => e[3] === "bubble" ? `bubble, z<sub>pole</sub> = ${sci(e[2][0], 4)}<br>We − We* = ${sci(e[2][1], 5)}` : `ring, r<sub>h</sub> = ${sci(e[2][2], 4)}<br>We − We* = ${sci(e[2][1], 5)}`);
+  $("res-touch").innerHTML = `Bubbles and rings reach the same touching bubble, \\(\\mathrm{We}^* = ${S.touching.We.toFixed(10)}\\), with the same slope: the ring coefficient equals the bubble one to \\(3\\cdot 10^{-7}\\).`;
+
+  // thin rings: We against ring radius with the Meyer-Seis zero-flux curve
+  const zf = ms.zero_flux.filter(q => q.r_h >= 0.2);
+  const c3 = frameChart($("ch-ms"), { W: 360, H: 250, x: { type: "log", dom: [0.8, 3000], maxN: 5 }, y: { type: "log", dom: [1e-7, 3], maxN: 5 }, xlabel: "ring radius R", ylabel: "Weber number We", m: { l: 50, b: 40 } });
+  const h3 = [];
+  for (const q of zf) { marker(c3.g, "dot", c3.sx(q.R), c3.sy(q.We), "d-ring d-dense", 2.4); h3.push([c3.sx(q.R), c3.sy(q.We), q]); }
+  el("path", { d: path(D.ms_curve.map(q => [c3.sx((q[0] + q[2]) / 2), c3.sy(q[1])])), class: "s-pred s-pred-top" }, c3.g);
+  hoverPoints($("ch-ms"), h3, e => `R = ${sci(e[2].R, 4)}<br>We computed ${sci(e[2].We, 6)}` + (e[2].We_MS ? `<br>We Meyer–Seis ${sci(e[2].We_MS, 6)}` : ""));
+  $("res-ms").innerHTML = `The rings land on the zero-flux curve of the family in {{cite:ms}}. Their speed, flux constant and Bernoulli constant match the asymptotics of {{cite:ms}}, Theorem 1.3. The differences fall steadily, to \\(10^{-7}\\) at <span class="nw">\\(R = 320\\).</span> Beyond that, those of the speed and the flux constant level off at a few \\(10^{-8}\\), the accuracy of the computed Weber number there; that of the Bernoulli constant falls on to \\(2\\cdot 10^{-9}\\) at <span class="nw">\\(R = 1199\\).</span>`;
+
+}
+function hoverPoints(svg, pts, fmtFn) {
+  const tip = $(svg.id + "-tip"), wrap = svg.parentNode;
+  svg.addEventListener("pointermove", ev => {
+    const [x, y, cx, cy] = svgPoint(svg, ev);
+    let best = null, bd = 14; for (const p of pts) { const d = Math.hypot(p[0] - x, p[1] - y); if (d < bd) { bd = d; best = p; } }
+    if (!best) { tip.hidden = true; return; }
+    showTip(tip, wrap, fmtFn(best), cx, cy);
+  });
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; });
+}
+
+
+setupDiagram();
+setupState();
+asymptotics();
+select(FR.findIndex(fr => fr.kind === "bubble" && Math.abs(fr.We - Math.max(...D.bubbles.map(b => b.We))) < 1e-15));
+</script>

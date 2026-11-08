@@ -1,0 +1,2 @@
+14:11:49 chains ['thinD'], processes [4] of 4, output results/hires/rings
+14:11:49 thinD0: scripts/run_rings.py results/rings/rings_thin.json:6 results/hires/rings/thinD0_p0.json 1.1 120.0 240 --tail=1e-13  (4 processes)

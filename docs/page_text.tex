@@ -1,0 +1,142 @@
+%% Text of the page "Axisymmetric bubbles", for editing.
+%%
+%% Edit anything here and send the file back; the changes are then carried into
+%% the page. Written by page/export_text.py.
+%%
+%%  * Every paragraph, displayed equation and caption of the page is here, in
+%%    page order. Figure labels, legends and buttons are not.
+%%  * [Figure text, ...] marks a caption and says where it sits.
+%%  * \cite{key} as usual; the keys are those of the bibliography at the end,
+%%    numbered alphabetically as on the page. For a new reference add a
+%%    \bibitem with authors, title, journal, year and DOI or arXiv number.
+%%  * Maths in \( \) and \[ \] is rendered on the page by MathJax, which knows
+%%    amsmath but no macros of your own.
+%%  * \val{...} is a number the page computes from the data; it can be moved
+%%    or dropped, but its value is not taken from this file.
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage[nocompress]{cite}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\newcommand{\pagetitle}[1]{{\LARGE\bfseries #1\par}\medskip}
+\newcommand{\val}[1]{#1}
+\newenvironment{figtext}[1]{\par\medskip\noindent{\sffamily\footnotesize [Figure text, #1]}\par\nopagebreak\noindent\ignorespaces}{\par\medskip}
+\newcommand{\pagefooter}[1]{\par\bigskip\noindent\rule{\linewidth}{0.4pt}\par\noindent #1\par}
+
+\begin{document}
+
+\pagetitle{Axisymmetric bubbles}
+
+% intro
+We consider the local bubble and bubble ring families rigorously constructed in \cite{mns} and \cite{ms} and continue them numerically. It turns out that they are connected. The near-spherical bubbles flatten, pass a largest Weber number and end when the two poles touch. The bubble rings start from that same touching bubble and, as their hole opens, become the thin rings of \cite{ms}. To prove this connection rigorously remains an interesting open problem.
+
+\section*{The problem}
+
+We consider steady axisymmetric solutions of the Euler equations with surface tension, where by the Young--Laplace law the pressure jumps across the interface by \(\sigma H\), with \(\sigma\) the surface tension and \(H\) the mean curvature. A bubble \(B\), filled with vacuum, moves with constant velocity \(V e_z\) through an inviscid, incompressible fluid of density \(\rho\) that is at rest at infinity. In the frame moving with the bubble the flow is steady and, outside the bubble, irrotational: \(u = \nabla\varphi\). After rescaling lengths by the radius \(R\) of the ball with the same volume and velocities by \(V\), a single parameter remains, the Weber number
+
+\[ \mathrm{We} = \frac{\rho V^2 R}{\sigma}. \]
+
+Bernoulli's law together with the Young--Laplace law turns the problem into an overdetermined free boundary value problem for the bubble \(B\) and the velocity potential \(\varphi\):
+
+\[ \begin{cases} \Delta \varphi = 0 & \text{in } \mathbb{R}^3 \setminus \overline{B}, \\[2pt] \partial_n \varphi = 0 & \text{on } \partial B, \\[2pt] \nabla \varphi \to -e_z & \text{as } |x| \to \infty, \\[2pt] H - \dfrac{\mathrm{We}}{2}\, |\nabla \varphi|^2 = \lambda & \text{on } \partial B, \\[2pt] |B| = \dfrac{4\pi}{3}. \end{cases} \]
+
+Here \(H\) is the sum of the principal curvatures of \(\partial B\) (\(H = 2\) on the unit sphere), and \(\lambda\) is an unknown constant. For a given \(B\) the first three equations determine \(\varphi\) and the fourth is the extra condition that selects the shape. We look for \(B\) axisymmetric about the \(z\)-axis and symmetric under \(z \mapsto -z\). This is the hollow-vortex case of the problem studied in \cite{mns}. When \(B\) is a solid torus, a bubble ring, the flow may circulate around the tube, as in \cite{ms}; the rings then form a two-parameter family, and we follow the rings with zero net flux through the hole.
+
+\textbf{Related works.} The small-Weber-number shape of the bubble, an oblate spheroid with aspect ratio \(\chi = 1 + \tfrac{9}{32}\,\mathrm{We} + \dots\), goes back to Moore \cite{moore1959}. Moore's spheroidal model \cite{moore1965} and El Sawi's virial approximation \cite{elsawi} predicted that the Weber number has a maximum. Miksis, Vanden-Broeck and Keller computed the branch numerically \cite{mvk}: the bubble becomes oblate, the Weber number passes a maximum, and then the poles are pushed in until they touch; Shankar recomputed the branch over its whole range \cite{shankar2005}. Both expected that beyond the touching the bubble becomes a torus \cite{mvk,shankar2005}, which is what we find. Benjamin gave a Hamiltonian theory of moving bubbles, with variational characterisations of the steady ones and an account of multiply connected bubbles \cite{benjamin}. In two dimensions a bubble in a uniform stream likewise flattens until opposite sides touch \cite{vbk1980,shankar1992}. For rings, the speed of a thin hollow vortex ring goes back to Hicks \cite{hicks}, as Kelvin's formula \cite{kelvin} does for a ring with a uniform core, and Moore and Saffman derived how surface tension changes it \cite{mooresaffman}. Toroidal bubbles with circulation were treated variationally by Ruban and Rasmussen \cite{rubanrasmussen}, and rising bubble rings in a viscous liquid by Pedley \cite{pedley1968} and by Cheng, Lou and Lim \cite{chenglouLim}. On the rigorous side, besides the constructions \cite{mns} near the sphere and \cite{ms} for thin rings, Han and Seis proved that thick bubble rings cannot exist at low Weber numbers \cite{hanseis}.
+
+\section*{Bifurcation diagram}
+
+\begin{figtext}{above the figure}
+Every point on the two curves is a computed steady state; click one to show it below. Horizontally the Weber number. Vertically the geometry, on a log scale: above the dashed line the pole height \(z_{\mathrm{pole}}\) of a bubble, from the sphere (\(z_{\mathrm{pole}} = 1\)) at the top down to the touching bubble; below it the hole radius \(r_{\mathrm{h}}\) of a ring, from the touching bubble down to thin rings with \(r_{\mathrm{h}} \approx 1200\).
+\end{figtext}
+
+\begin{figtext}{below the figure}
+The dashed horizontal line is the touching bubble (\(z_{\mathrm{pole}} = 0 = r_{\mathrm{h}}\)); dotted ends join the last computed bubble and the first computed ring to it. Both curves reach it at the same Weber number \(\mathrm{We}^* = 1.1331\). The dashed curves are the first-order prediction of \cite{mns} near the sphere and the zero-flux thin rings of \cite{ms}. Diamonds mark where non-axisymmetric rings branch off.
+\end{figtext}
+
+\section*{Along the branch}
+
+\begin{figtext}{below the figure}
+Section through the symmetry axis (dash-dotted), with \(r\) and \(z\) at equal scale. The shaded region is the bubble; the thin lines are streamlines in the frame of the bubble, and the arrow shows its direction of motion. Rings too large for the window are shown as a close-up of the tube, with the streamlines that circle it.
+\end{figtext}
+
+\section*{Do the predicted asymptotics hold?}
+
+\begin{figtext}{above the figure}
+The two families are described in one limit each, and the two branches meet in a third. In each chart the dots are computed states and the dashed line is the prediction.
+\end{figtext}
+
+\subsection*{Near the sphere}
+
+\begin{figtext}{prediction above the chart}
+\cite{mns}: \(\chi = 1 + \frac{9}{32}\,\mathrm{We} + O(\mathrm{We}^2)\)
+\end{figtext}
+
+\begin{figtext}{below the chart}
+The computed curve leaves the predicted line tangentially. Its slope at \(\mathrm{We} = 0\) is \val{0.2812499999990}, against \(9/32 = 0.28125\). The predicted shape and pole curvature match too.
+\end{figtext}
+
+\subsection*{Where bubbles meet rings}
+
+\begin{figtext}{prediction above the chart}
+Both sides: \(\mathrm{We} - \mathrm{We}^* \approx 2.0364\, z\)
+\end{figtext}
+
+\begin{figtext}{below the chart}
+Bubbles and rings reach the same touching bubble, \(\mathrm{We}^* = \val{1.1330895142}\), with the same slope: the ring coefficient equals the bubble one to \(3\cdot 10^{-7}\).
+\end{figtext}
+
+\subsection*{Thin rings}
+
+\begin{figtext}{prediction above the chart}
+\cite{ms}, zero flux through the hole
+\end{figtext}
+
+\begin{figtext}{below the chart}
+The rings land on the zero-flux curve of the family in \cite{ms}. Their speed, flux constant and Bernoulli constant match the asymptotics of \cite{ms}, Theorem 1.3. The differences fall steadily, to \(10^{-7}\) at \(R = 320\). Beyond that, those of the speed and the flux constant level off at a few \(10^{-8}\), the accuracy of the computed Weber number there; that of the Bernoulli constant falls on to \(2\cdot 10^{-9}\) at \(R = 1199\).
+\end{figtext}
+
+\section*{Method}
+
+\textbf{Shapes.} The meridian of a bubble is a curve in the half plane \(r \ge 0\). We describe it by its tangent angle, expanded in a Fourier sine series whose symmetries encode regularity on the axis and the reflection \(z \mapsto -z\); the curve then closes by construction. The cross-section of a ring is described in the same way, with a parametrisation that concentrates points in its narrow neck near the axis.
+
+\textbf{Flow.} For a bubble, \(\varphi\) solves an exterior Neumann problem. We write it as a boundary integral equation on the meridian, with the kernels integrated over the azimuthal angle in closed form (complete elliptic integrals), and solve it by a high-order Nyström method with corrections for the singular and nearly singular integrals. For a ring we represent the flow by a vortex sheet on its surface; the sheet strength follows from the condition of zero flux through the hole, and the circulation \(\Gamma\) from the sheet strength.
+
+\textbf{Continuation.} The boundary condition \(H - \tfrac{\mathrm{We}}{2}|\nabla\varphi|^2 = \lambda\), projected onto Fourier modes, is solved together with the volume constraint by Newton's method, with \(\lambda\) and the shape as unknowns. Pseudo-arclength continuation carries the bubbles from the sphere through the fold; the pole height and then the hole radius serve as parameters towards and beyond the touching bubble. The resolution is increased along the way, every value is computed at several resolutions, and a second, independent solver (a different shape representation and flow solver) reproduces the largest Weber number to 13 digits.
+
+\textbf{Bifurcations.} The steady states are the critical points of the energy \(|\partial B| - \tfrac{\mathrm{We}}{2}\, m_{zz}\) at fixed volume, where \(m_{zz}\) is the added mass. Along the whole branch we compute the eigenvalues of its second variation, separately for perturbations with azimuthal wave number \(m\) that are even or odd under \(z \mapsto -z\). A branch can bifurcate only where an eigenvalue crosses zero. Within the axisymmetric class (\(m = 0\)) we found no bifurcation: the eigenvalues change sign only at the two folds, the largest Weber number of the bubbles and that of the rings. In particular no pear-shaped bubbles branch off. For the thinnest rings, with hole radius above about 340, the smallest eigenvalue drops below the accuracy of the computation.
+
+\textbf{Other bifurcations.} Along the bubble branch we found no crossing for any \(m\), so no non-axisymmetric bubble branches off it. The rings are different. At hole radius 0.078 a branch with an off-centre hole (\(m = 1\)) branches off, and from hole radius 0.67 on, one beaded branch for each \(m = 2, 3, \dots\), at the hole radii where a hollow tube with swirl becomes unstable to varicose (Rayleigh--Plateau) perturbations \cite{ponstein}; there are more and more of them as the rings grow. These are the diamonds in the bifurcation diagram. If the bubble may also rotate about its direction of motion, bubbles moving on helical paths appear \cite{davinci}.
+
+\textbf{Values excluded in \cite{ms}.} The construction of thin rings in \cite{ms} covers every limiting value of the circulation Weber number \(\rho\Gamma^2/(4\pi^2\bar\varepsilon\sigma)\), with \(\bar\varepsilon\) the radius of the cross-section, except \(3, 4, 5, \dots\). At these values the linearised problem degenerates, and \cite{ms} expect rings with a non-circular cross-section to branch off, as for two-dimensional bubbles with circulation, the limit of the cross-section: there the circle bifurcates at these values \cite{wegmanncrowdy}, and it is the only solution below the first one, 3 \cite{niebel2d}. These would be axisymmetric branches. On the zero-flux rings this Weber number is at most 1.1, near the touching bubble, and below 0.3 once the rings are thin, so the excluded values are never reached; they belong to rings with a strong backflow through the hole, which we do not follow here.
+
+\begin{thebibliography}{99}
+\bibitem{benjamin} T. B. Benjamin, \href{https://doi.org/10.1017/S002211208700212X}{Hamiltonian theory for motions of bubbles in an infinite liquid}, J. Fluid Mech. 181, 349--379 (1987).
+\bibitem{chenglouLim} M. Cheng, J. Lou, T. T. Lim, \href{https://doi.org/10.1063/1.4811407}{Motion of a bubble ring in a viscous fluid}, Phys. Fluids 25, 067104 (2013).
+\bibitem{elsawi} M. El Sawi, \href{https://doi.org/10.1017/S0022112074000620}{Distorted gas bubbles at large Reynolds number}, J. Fluid Mech. 62, 163--183 (1974).
+\bibitem{davinci} B. Gebhard, L. Niebel, C. Seis, \href{https://arxiv.org/abs/2609.26283}{On Leonardo da Vinci's paradox}, arXiv:2609.26283 (2026).
+\bibitem{hanseis} Y. Han, C. Seis, \href{https://arxiv.org/abs/2603.24217}{Non-existence of thick bubble rings at low Weber numbers}, arXiv:2603.24217 (2026).
+\bibitem{hicks} W. M. Hicks, \href{https://doi.org/10.1098/rstl.1884.0008}{On the steady motion and small vibrations of a hollow vortex}, Phil. Trans. R. Soc. Lond. 175, 161--195 (1884).
+\bibitem{mns} D. Meyer, L. Niebel, C. Seis, \href{https://doi.org/10.1007/s00526-025-03144-w}{Steady bubbles and drops in inviscid fluids}, Calc. Var. Partial Differential Equations 64, 299, \href{https://arxiv.org/abs/2503.05503}{arXiv:2503.05503} (2025).
+\bibitem{ms} D. Meyer, C. Seis, \href{https://doi.org/10.4171/JEMS/1757}{Steady ring-shaped vortex sheets}, J. Eur. Math. Soc., online first, \href{https://arxiv.org/abs/2409.08220}{arXiv:2409.08220} (2026).
+\bibitem{mvk} M. Miksis, J.-M. Vanden-Broeck, J. B. Keller, \href{https://doi.org/10.1017/S0022112081002000}{Axisymmetric bubble or drop in a uniform flow}, J. Fluid Mech. 108, 89--100 (1981).
+\bibitem{moore1959} D. W. Moore, \href{https://doi.org/10.1017/S0022112059000520}{The rise of a gas bubble in a viscous liquid}, J. Fluid Mech. 6, 113--130 (1959).
+\bibitem{moore1965} D. W. Moore, \href{https://doi.org/10.1017/S0022112065001660}{The velocity of rise of distorted gas bubbles in a liquid of small viscosity}, J. Fluid Mech. 23, 749--766 (1965).
+\bibitem{mooresaffman} D. W. Moore, P. G. Saffman, \href{https://doi.org/10.1098/rsta.1972.0055}{The motion of a vortex filament with axial flow}, Phil. Trans. R. Soc. Lond. A 272, 403--429 (1972).
+\bibitem{niebel2d} L. Niebel, \href{https://doi.org/10.1007/s00205-026-02262-9}{Global rigidity of two-dimensional bubbles}, Arch. Ration. Mech. Anal. 250, 104, \href{https://arxiv.org/abs/2510.17557}{arXiv:2510.17557} (2026).
+\bibitem{pedley1968} T. J. Pedley, \href{https://doi.org/10.1017/S0022112068000601}{The toroidal bubble}, J. Fluid Mech. 32, 97--112 (1968).
+\bibitem{ponstein} J. Ponstein, \href{https://doi.org/10.1007/BF00411768}{Instability of rotating cylindrical jets}, Appl. Sci. Res. A 8, 425--456 (1959).
+\bibitem{rubanrasmussen} V. P. Ruban, J. Juul Rasmussen, \href{https://doi.org/10.1103/PhysRevE.68.056301}{Toroidal bubbles with circulation in ideal hydrodynamics: a variational approach}, Phys. Rev. E 68, 056301 (2003).
+\bibitem{shankar1992} P. N. Shankar, \href{https://doi.org/10.1017/S0022112092003021}{On the shape of a two-dimensional bubble in uniform motion}, J. Fluid Mech. 244, 187--200 (1992).
+\bibitem{shankar2005} P. N. Shankar, \href{https://doi.org/10.1007/BF02704202}{The shape of an axisymmetric bubble in uniform motion}, Pramana -- J. Phys. 65, 437--455 (2005).
+\bibitem{kelvin} W. Thomson (Lord Kelvin), The translatory velocity of a circular vortex ring, Phil. Mag. 33, 511--512 (1867).
+\bibitem{vbk1980} J.-M. Vanden-Broeck, J. B. Keller, \href{https://doi.org/10.1017/S0022112080001863}{Deformation of a bubble or drop in a uniform flow}, J. Fluid Mech. 101, 673--686 (1980).
+\bibitem{wegmanncrowdy} R. Wegmann, D. Crowdy, \href{https://doi.org/10.1088/0951-7715/13/6/313}{Shapes of two-dimensional bubbles deformed by circulation}, Nonlinearity 13, 2131--2141 (2000).
+\end{thebibliography}
+
+\pagefooter{This webpage was created by \href{https://lukasniebel.github.io}{Lukas Niebel} with the help of Claude Opus.}
+
+\end{document}

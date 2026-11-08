@@ -1,0 +1,2 @@
+13:43:28 chains ['thinC'], processes [4] of 4, output results/hires/rings
+13:43:28 thinC0: scripts/run_rings.py results/rings/rings_thin3.json:0 results/hires/rings/thinC0_p0.json 1.1 1120.0 240 --thin --tail=1e-13  (4 processes)
