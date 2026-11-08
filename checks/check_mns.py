@@ -5,7 +5,7 @@ predict for the unique symmetric near-spherical bubble
 
     d(theta) = -(3/32) We (3 cos^2 theta - 1) + o(We)      (radial distance
                                                             sphere -> surface)
-    chi      = 1 + (9/32) We + O(We^2)                     (Remark 1.2 (3))
+    chi      = 1 + (9/32) We + O(We^2)                     (Remark 1.3 (3))
 
 and hence lambda = H_pole = 2 - (3/4) We + O(We^2) (the pole curvature of
 the shape above).  This script solves the bubble equations at fixed We for

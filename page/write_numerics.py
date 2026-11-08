@@ -106,7 +106,7 @@ def main():
     w("## Asymptotics in detail")
     w("")
     f = mns["fits"]["M28"]["deg5"]
-    w("**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with their parameter γ = 0):")
+    w("**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.3 (3) with their parameter γ = 0):")
     w("d(θ) = −(3/32) We (3cos²θ − 1) + o(We), χ = 1 + (9/32) We + O(We²), hence λ = H_pole = 2 − (3/4) We.")
     w("Least-squares fits on 19 bubbles with We ≤ 0.1:")
     w("")

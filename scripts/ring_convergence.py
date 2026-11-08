@@ -4,7 +4,8 @@ Each selected ring is re-represented with M Fourier modes (curvature-density map
 re-designed from the solution) and re-solved with Newton at the same r_h, on
 panels resolving the modes at two panel densities (c_h) and with a tighter
 panel tolerance.  Reports We, lam, circulation, r_o, z_max and the resolution
-indicators, so the spread over discretisations measures the error.
+indicators, so the spread over discretisations measures the error. Rings already in out.json
+are skipped; the others are appended.
 
 Usage: python scripts/ring_convergence.py out.json run.json:i [run.json:j ...] [--M=128,192,256]
 """
@@ -53,6 +54,9 @@ def main():
     out, specs = args[0], args[1:]
     res = json.load(open(out)) if os.path.exists(out) else []
     for spec in specs:
+        if any(r['source'] == spec for r in res):
+            print(f"{spec}: already in {out}", flush=True)
+            continue
         fn, idx = spec.rsplit(':', 1)
         p = json.load(open(fn))[int(idx)]
         Y0 = np.concatenate([p['a'], [p['lam'], p['rho_h'], p['We']]])

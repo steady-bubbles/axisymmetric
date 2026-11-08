@@ -1,9 +1,12 @@
 """Validate the thin-torus expansion of the surface speed (zero flux, exact circular torus):
  |u| = (Gam/2 pi a)[1 + eps u1 cos phi + eps^2 (u20 + u2 cos 2phi) + O(eps^3)],
  u1 = 4 pi R/Gam - (Lambda - 1/2),  u2 = Lambda - pi R/Gam - 17/16  (= 15/16 on Gam = pi R/(Lambda-2))."""
-import numpy as np, warnings
+import numpy as np, warnings, sys
 warnings.filterwarnings('ignore')
 from mfs import torus_speed_fourier
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 R = 1.0
 print(' a/R      Gam(MFS)   piR/(L-2)   circ_line   psi_err   U1/(G/2pia)/eps  u1_pred    U2/(G/2pia)/eps^2  u2_pred  [MFS nsrc 48 vs 64 diff in U2]')
 for eps in [0.2, 0.1, 0.05, 0.02, 0.01, 0.005]:

@@ -50,7 +50,7 @@ the two-parameter family of Meyer and Seis.
 
 ## Asymptotics in detail
 
-**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.2 with their parameter γ = 0):
+**Near the sphere** (Meyer–Niebel–Seis, Theorem 1.1 and Remark 1.3 (3) with their parameter γ = 0):
 d(θ) = −(3/32) We (3cos²θ − 1) + o(We), χ = 1 + (9/32) We + O(We²), hence λ = H_pole = 2 − (3/4) We.
 Least-squares fits on 19 bubbles with We ≤ 0.1:
 

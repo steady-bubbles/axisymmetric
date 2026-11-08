@@ -29,16 +29,17 @@ predictions of Meyer–Niebel–Seis near the sphere and of Meyer–Seis for thi
 rings from which non-axisymmetric rings branch off. The green circle is the page's selected
 state, here the fold.*
 
-**Notation.** We = ρV²R/σ, with ρ the density of the fluid, V the speed of the bubble, σ the
-surface tension and R the radius of the sphere of the same volume; lengths are in units of R. On
+**Notation.** We = ρV²R₀/σ, with ρ the density of the fluid, V the speed of the bubble, σ the
+surface tension and R₀ the radius of the sphere of the same volume; lengths are in units of R₀. On
 the surface, H − (We/2)|∇φ|² = λ, where φ is the velocity potential, H the sum of the principal
 curvatures (2 on the unit sphere) and λ the Bernoulli constant. The poles of a bubble are
 stagnation points, so λ is the curvature at the pole, and λ = 0 marks the onset of dimples.
 z_pole is the height of a bubble's pole above its equatorial plane (1 for the sphere, 0 when the
-poles touch), χ = r_eq/z_pole its aspect ratio, and r_h the radius of a ring's hole. Rings can
-carry a net flux through the hole, so they form a two-parameter family; the rings followed here
-have zero flux, the only ones that can connect continuously to the touching bubble, which has no
-hole.
+poles touch), r_eq its equatorial radius and χ = r_eq/z_pole its aspect ratio. For a ring, r_h is
+the radius of its hole and R its radius (the distance of the centroid of its cross-section from
+the axis). Rings can carry a net flux through the hole, so they form a two-parameter family; the
+rings followed here have zero flux, the only ones that can connect continuously to the touching
+bubble, which has no hole.
 
 ## Results
 
@@ -102,18 +103,26 @@ regenerate `docs/numerics.md` and `docs/page_text.tex`.
 The checks: `python checks/check_ms.py` (about 1 min), `python checks/check_mns.py` (about 5 min on
 4 cores), `python verify/independent_bubble.py` (see its docstring).
 
-The scripts in `scripts/`, `checks/` and `page/` print their usage with `--help`.
+The scripts in `scripts/`, `checks/`, `verify/` and `page/` print their usage with `--help`.
 
 ### Rerunning the computations
 
-The scripts continue from what their output already holds: `hires_rings.py` resumes unfinished
-chains, `bubble_sectors.py`, `ring_sectors.py` and `crossing_rings.py` skip what is already
-computed, `ring_qscan.py` extends scans whose directions stopped on the time limit, and
-`ring_convergence.py` appends. With the committed results in place, the commands below therefore
-do little; to recompute, give new output paths (for the ring chains a new folder, merged with
-`merge_hires_rings.py --dir=`). Reruns agree with the committed files to round-off, not byte for
-byte (`check_ms.py`, `merge_hires_rings.py` and `ring_asymptotics.py` reproduce theirs exactly,
-and the page build up to its time stamp).
+**The commands below write to the committed files.** Some continue from what their output
+already holds: `hires_rings.py` resumes unfinished chains, and `bubble_sectors.py`,
+`ring_sectors.py`, `crossing_rings.py` and `ring_convergence.py` skip what is already computed, so
+with the committed results in place they do little. `ring_qscan.py` extends scans whose directions
+stopped on the time limit, as most of the committed ones did, and so rewrites the scan file. All
+other scripts recompute and overwrite their output; `run_branch*.py` rewrite it after every step,
+so an interrupted run leaves a truncated branch. To recompute, give new output paths (for the ring
+chains a new folder, merged with `merge_hires_rings.py --dir=`).
+
+Reruns agree with the committed files to round-off, not byte for byte (`check_ms.py`,
+`merge_hires_rings.py` and `ring_asymptotics.py` reproduce theirs exactly, and the page build up
+to its time stamp). The bubble continuations are an exception: their parameter map is optimised
+to a tolerance of 10⁻³, so round-off can change it slightly, and a rerun then follows the same
+branch through shifted points (for `run_branch.py`, states of the same index differ by up to
+4·10⁻⁸ in We and 6·10⁻⁷ relative in z_pole, yet lie on the committed curve to interpolation
+accuracy); compare them at equal z_pole, not by index.
 
 The times are rough, from the logs, for a 4-core machine. The bubble scripts (`run_branch*.py`,
 `special_points.py`, `convergence.py`) run in one process; the others use `BUBBLES_NPROC` worker
@@ -177,7 +186,9 @@ neck of rings with small holes; where both resolve a ring they agree to 5·10⁻
 
 * The touch chain was stopped at r_h = 1.0·10⁻⁵ (a further part re-solved that ring but did not
   finish the next step, and was not continued), so the smallest ring of the merged branch,
-  r_h = 8.6·10⁻⁶, comes from the first computation.
+  r_h = 8.6·10⁻⁶, comes from the first computation. That run (`rings_neck3`) stopped refining at
+  its largest M = 320, so its last two rings, r_h = 1.1·10⁻⁵ and this one, have tails 1.0·10⁻¹²
+  and 1.4·10⁻¹², just above its target of 10⁻¹² (the merge accepts tails below 10⁻¹¹).
 * Beyond r_h ≈ 130 the residual can only be driven to its round-off floor 3·10⁻¹⁵ r_o², which
   leaves a relative scatter of a few 10⁻⁹ (at most about 10⁻⁸) in the Weber numbers of the
   thinnest rings.
@@ -188,10 +199,12 @@ neck of rings with small holes; where both resolve a ring they agree to 5·10⁻
   with the stored one to 10⁻¹² in We and λ.
 * For several runs of the first computation (`results/rings/rings_*.json`) the exact command
   lines were not recorded; their logs give the starting ring, and the files record the
-  resolution of every ring. `rings_thin7.json` starts from a ring at r_h = 336 that is not kept.
-  `rings_down_part1.json` is the first part of `rings_down.json` (the two files are identical);
-  some scripts read it under that name. The runs of `rings_neck`, `rings_thin2` and `rings_thin3`
-  were stopped by hand, and their logs end with the tracebacks of the stopped worker processes.
+  resolution of every ring. `rings_thin7.json` starts from the ring at r_h = 336 (its record 0),
+  one step of factor 1.35 beyond the last ring of `rings_thin3.json` (r_h = 249); the run that
+  made that ring is not kept. `rings_down_part1.json` is a copy of `rings_down.json`, the first
+  part of the down run, which `rings_down2.json` continues; some scripts read it under that name.
+  The runs of `rings_neck`, `rings_thin2` and `rings_thin3` were stopped by hand, and their logs
+  end with the tracebacks of the stopped worker processes.
 * `results/convergence.json` is computed on `results/branch.json`; the three reference bubbles of
   `verify/independent_bubble.py` come from an earlier run of it, whose branch is not kept.
 * The logs in `results/hires/` are copies taken while the runs went on: `branch.log` stops at

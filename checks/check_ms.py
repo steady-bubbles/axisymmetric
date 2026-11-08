@@ -10,7 +10,7 @@ aspect ratio eps -> 0,
     gamma = (3/8pi) log(8/eps) - 15/(16 pi) - (pi/4) beta + o(1)   (flux constant)
     nu    = -1/(4 pi^2) + beta + o(1)                                (Bernoulli)
 
-where (their (3.x) substitutions, b = R b_ext)
+where (their substitutions just before (1.33), with b = R b_ext)
 
     eps   = eps_bar / R      eps_bar: cross-section radius (|Omega| = pi eps_bar^2)
                              R: radial coordinate of the cross-section's centroid
@@ -26,7 +26,7 @@ We = rho V^2 / sigma, circulation Gamma):
                                 stream; MS's relative stream function is the
                                 mirror image of ours, hence the sign),
     nu    = beta * eps_bar * lambda   (multiply H - (We/2)|u|^2 = lambda by
-                                       beta * eps_bar and compare with (38)).
+                                       beta * eps_bar and compare with (1.41)).
 
 The zero-flux branch has Q = 0, i.e. gamma = 0 exactly: in the MS family it
 is the curve beta(eps) on which their gamma vanishes, to leading order

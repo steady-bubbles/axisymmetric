@@ -8,6 +8,10 @@ sys.path.insert(0, REPO)
 from bubbles.ring import RingMap, RingPanels, RingGeometry, ring_theta
 from bubbles.quad import cheb_eval
 
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
+
 ROOT = os.path.join(REPO, 'results', 'rings') + os.sep
 
 

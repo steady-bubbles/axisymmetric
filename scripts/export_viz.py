@@ -8,9 +8,10 @@ maxima by up to 5e-7 (the sphere: z_max = 0.99999980 and u_max = 1.4999997
 instead of 1 and 1.5).
 
 Usage: python scripts/export_viz.py [results/hires/branch.json] [results/hires/viz/bubble_viz.json]
-           [nproc] [--step=1] [--reuse=earlier_viz.json]
+           [nproc] [--step=2] [--reuse=earlier_viz.json]
 (paths relative to the current directory; nproc defaults to BUBBLES_NPROC, else 3)
---step=k exports every k-th state (and the last); the touching fit uses all states.
+--step=k exports every k-th state (and the last); the committed export used k = 2 (the
+default). The touching fit uses all states.
 --reuse takes the streamlines of frames with the same We and z_pole from an
 earlier export (the expensive part) and recomputes the rest.
 """
@@ -133,7 +134,7 @@ if __name__ == '__main__':
     OUT = argv[1] if len(argv) > 1 else 'results/hires/viz/bubble_viz.json'
     NPROC = int(argv[2]) if len(argv) > 2 else int(os.environ.get('BUBBLES_NPROC', 3))
     os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
-    STEP = int(opts.get('step', 1))
+    STEP = int(opts.get('step', 2))
     pts = json.load(open(SRC))
     sel = [pts[i] for i in sorted(set(range(0, len(pts), STEP)) | {len(pts) - 1})]
     key = lambda f: (round(f['We'], 12), round(f['z_pole'], 12))

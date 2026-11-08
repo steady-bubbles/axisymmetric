@@ -1,7 +1,10 @@
 """Validation of biot_savart.py on the exact sphere solution (no solver code)."""
-import numpy as np, time
+import numpy as np, time, sys
 from numpy.polynomial.legendre import leggauss
 from biot_savart import Curve, velocity
+if __name__ == '__main__' and {'-h', '--help'} & set(sys.argv[1:]):
+    print(__doc__)
+    sys.exit()
 
 npan, p = 24, 16
 br = np.linspace(0, np.pi, npan + 1)
